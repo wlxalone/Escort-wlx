@@ -27,6 +27,27 @@ function writeJson(key, value) {
   localStorage.setItem(key, JSON.stringify(value));
 }
 
+function translateText(key, variables = {}, fallback = '') {
+  return window.t ? window.t(key, variables, fallback) : (fallback || key);
+}
+
+function localizeCityName(city) {
+  return window.localizeCity ? window.localizeCity(city) : city;
+}
+
+function localizePriceText(price) {
+  return window.localizePrice ? window.localizePrice(price) : price;
+}
+
+function localizeLocation(city, district) {
+  return window.formatLocation ? window.formatLocation(city, district) : `${city} / ${district}`;
+}
+
+function setFavoriteButtonLabel(button, profileName) {
+  if (!button) return;
+  button.setAttribute('aria-label', translateText('dynamic.saveModelAria', { name: profileName }, `Save ${profileName}`));
+}
+
 function getPageName() {
   return document.body?.dataset.page || '';
 }
@@ -67,6 +88,7 @@ function toggleFavorite(profileId) {
 function updateFavoriteButton(button, isActive) {
   if (!button) return;
   button.classList.toggle('active', isActive);
+  button.setAttribute('aria-pressed', String(isActive));
   button.innerHTML = isActive ? '&#9829;' : '&#9825;';
 }
 
@@ -74,19 +96,26 @@ function buildBadges(badges = []) {
   return badges
     .map((badge) => BADGE_CONFIG[badge])
     .filter(Boolean)
-    .map((badgeConfig) => `<span class="badge ${badgeConfig.cls}">${badgeConfig.label}</span>`)
+    .map((badgeConfig, index) => {
+      const badgeKey = badges[index];
+      const label = window.getBadgeLabel ? window.getBadgeLabel(badgeKey, badgeConfig.label) : badgeConfig.label;
+      return `<span class="badge ${badgeConfig.cls}">${label}</span>`;
+    })
     .join('');
 }
 
 function getPrimaryRate(profile) {
-  return profile.priceFrom || profile.rates?.[0]?.price || 'On request';
+  return localizePriceText(profile.priceFrom || profile.rates?.[0]?.price || translateText('dynamic.onRequest', {}, 'On request'));
 }
 
 function getSearchText(profile) {
+  const locationText = localizeLocation(profile.city, profile.district);
   return [
     profile.name,
     profile.city,
     profile.district,
+    localizeCityName(profile.city),
+    locationText,
     profile.aboutMe,
     ...(profile.tags || []),
     ...(profile.services || []),
@@ -126,6 +155,8 @@ function createProfileCard(profile) {
   const card = document.createElement('article');
   const isSaved = isFavorite(profile.id);
   const verifiedMark = profile.badges.includes('verified') ? '<span class="profile-card__check">&#10003;</span>' : '';
+  const locationText = localizeLocation(profile.city, profile.district);
+  const tags = (profile.tags || []).map((tag) => `<span class="profile-card__tag">${tag}</span>`).join('');
 
   card.className = 'profile-card';
   card.dataset.city = profile.city;
@@ -133,11 +164,11 @@ function createProfileCard(profile) {
 
   card.innerHTML = `
     <div class="profile-card__img-wrap">
-      <a href="profile.html?id=${profile.id}" class="profile-card__img-link" aria-label="Open ${profile.name} profile">
+      <a href="profile.html?id=${profile.id}" class="profile-card__img-link" aria-label="${translateText('dynamic.openProfileAria', { name: profile.name }, `Open ${profile.name} profile`)}">
         <img class="profile-card__img" src="${profile.photo}" alt="${profile.name}" loading="lazy"/>
       </a>
       <div class="profile-card__badges">${buildBadges(profile.badges)}</div>
-      <button class="profile-card__fav${isSaved ? ' active' : ''}" type="button" aria-label="Save ${profile.name}">${isSaved ? '&#9829;' : '&#9825;'}</button>
+      <button class="profile-card__fav${isSaved ? ' active' : ''}" type="button">${isSaved ? '&#9829;' : '&#9825;'}</button>
       <div class="profile-card__price-tag">${getPrimaryRate(profile)}</div>
     </div>
     <div class="profile-card__body">
@@ -151,19 +182,20 @@ function createProfileCard(profile) {
           <path d="M8 1.5A4.5 4.5 0 0 1 12.5 6c0 3.5-4.5 8-4.5 8S3.5 9.5 3.5 6A4.5 4.5 0 0 1 8 1.5z" stroke="currentColor" stroke-width="1.2"/>
           <circle cx="8" cy="6" r="1.5" stroke="currentColor" stroke-width="1.2"/>
         </svg>
-        ${profile.city} / ${profile.district}
+        ${locationText}
       </div>
       <div class="profile-card__tags">
-        ${profile.tags.map((tag) => `<span class="profile-card__tag">${tag}</span>`).join('')}
+        ${tags}
       </div>
       <div class="profile-card__footer">
-        <a href="contact.html?profile=${profile.id}" class="profile-card__btn">Message</a>
-        <a href="profile.html?id=${profile.id}" class="profile-card__btn profile-card__btn--primary">View Profile</a>
+        <a href="contact.html?profile=${profile.id}" class="profile-card__btn">${translateText('dynamic.messageButton', {}, 'Message')}</a>
+        <a href="profile.html?id=${profile.id}" class="profile-card__btn profile-card__btn--primary">${translateText('dynamic.viewProfile', {}, 'View Profile')}</a>
       </div>
     </div>
   `;
 
   const favoriteButton = $('.profile-card__fav', card);
+  setFavoriteButtonLabel(favoriteButton, profile.name);
   favoriteButton?.addEventListener('click', (event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -177,11 +209,11 @@ function updateResultsCount(element, visibleCount, totalCount) {
   if (!element) return;
 
   if (totalCount === 0) {
-    element.textContent = 'No profiles found';
+    element.textContent = translateText('dynamic.noModelsFound', {}, 'No models found');
     return;
   }
 
-  element.textContent = `Showing ${visibleCount} of ${totalCount} profiles`;
+  element.textContent = translateText('dynamic.showingModels', { visible: visibleCount, total: totalCount }, `Showing ${visibleCount} of ${totalCount} models`);
 }
 
 function syncListingUrl(state) {
@@ -242,7 +274,9 @@ function createListingController(config) {
     if (loadMoreButton) {
       const hasMore = filteredProfiles.length > visibleProfiles.length;
       loadMoreButton.disabled = !hasMore;
-      loadMoreButton.textContent = hasMore ? 'Load More Profiles' : 'All profiles loaded';
+      loadMoreButton.textContent = hasMore
+        ? translateText('dynamic.loadMoreModels', {}, 'Load More Models')
+        : translateText('dynamic.allModelsLoaded', {}, 'All models loaded');
       loadMoreButton.hidden = filteredProfiles.length === 0;
     }
 
@@ -306,7 +340,7 @@ function initHeader() {
   const switcher = $('#lang-switcher');
   const dropdown = $('#lang-dropdown');
   const currentLanguage = $('#current-lang');
-  const savedLanguage = localStorage.getItem(STORAGE_KEYS.language) || 'EN';
+  const savedLanguage = window.getCurrentLanguage ? window.getCurrentLanguage() : (localStorage.getItem(STORAGE_KEYS.language) || 'EN');
   const currentPage = getPageName();
 
   if (currentLanguage) currentLanguage.textContent = savedLanguage;
@@ -346,10 +380,15 @@ function initHeader() {
     const button = event.target.closest('button[data-lang]');
     if (!button) return;
 
-    const lang = button.dataset.lang || 'EN';
-    localStorage.setItem(STORAGE_KEYS.language, lang);
+    const lang = window.normalizeLanguageCode ? window.normalizeLanguageCode(button.dataset.lang || 'EN') : (button.dataset.lang || 'EN');
+    if (window.setCurrentLanguage) {
+      window.setCurrentLanguage(lang);
+    } else {
+      localStorage.setItem(STORAGE_KEYS.language, lang);
+    }
     if (currentLanguage) currentLanguage.textContent = lang;
     switcher?.classList.remove('open');
+    window.location.reload();
   });
 
   document.addEventListener('click', () => switcher?.classList.remove('open'));
@@ -387,16 +426,25 @@ function initHomePage() {
   const citySelect = $('#home-city-select');
   const ageSelect = $('#home-age-select');
   const categorySelect = $('#home-category-select');
+  const homeFilters = [citySelect, ageSelect, categorySelect];
 
-  form?.addEventListener('submit', (event) => {
-    event.preventDefault();
+  const applyHomeFilters = () => {
     controller.setState({
       city: citySelect?.value || '',
       age: ageSelect?.value || '',
       category: categorySelect?.value || ''
     });
+  };
+
+  form?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    applyHomeFilters();
 
     $('.profiles-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  homeFilters.forEach((filter) => {
+    filter?.addEventListener('change', applyHomeFilters);
   });
 
   $$('.tag').forEach((tag) => {
@@ -468,7 +516,7 @@ function createGalleryThumbnail(imageUrl, index, onSelect) {
   const button = document.createElement('button');
   button.type = 'button';
   button.className = `gallery-thumb${index === 0 ? ' active' : ''}`;
-  button.innerHTML = `<img src="${imageUrl}" alt="Gallery image ${index + 1}" loading="lazy"/>`;
+  button.innerHTML = `<img src="${imageUrl}" alt="${translateText('dynamic.galleryImageAlt', { index: index + 1 }, `Gallery image ${index + 1}`)}" loading="lazy"/>`;
   button.addEventListener('click', () => onSelect(button, imageUrl));
   return button;
 }
@@ -488,24 +536,25 @@ function initProfilePage() {
 
   if (mainPhoto) {
     mainPhoto.src = profile.photo;
-    mainPhoto.alt = `${profile.name} main photo`;
+    mainPhoto.alt = translateText('dynamic.mainPhotoAlt', { name: profile.name }, `${profile.name} main photo`);
   }
 
   $('#breadcrumb-name').textContent = profile.name;
   $('#profile-name').textContent = `${profile.name}, ${profile.age}`;
-  $('#profile-location').textContent = `${profile.city} / ${profile.district}`;
+  $('#profile-location').textContent = localizeLocation(profile.city, profile.district);
   $('#stat-age').textContent = `${profile.age}`;
   $('#stat-height').textContent = `${profile.height} cm`;
   $('#stat-weight').textContent = `${profile.weight} kg`;
   $('#stat-bust').textContent = profile.bust;
   $('#profile-about').textContent = profile.aboutMe;
-  $('#profile-availability').textContent = profile.availability;
+  $('#profile-availability').textContent = profile.availability.replace(/^Daily/, translateText('dynamic.dailyPrefix', {}, 'Daily'));
   $('#profile-languages').textContent = profile.languages.join(', ');
   $('#profile-from-price').textContent = getPrimaryRate(profile);
   $('#profile-badges').innerHTML = buildBadges(profile.badges);
 
   if (favoriteButton) {
     updateFavoriteButton(favoriteButton, isFavorite(profile.id));
+    setFavoriteButtonLabel(favoriteButton, profile.name);
     favoriteButton.addEventListener('click', () => {
       updateFavoriteButton(favoriteButton, toggleFavorite(profile.id));
     });
@@ -536,10 +585,10 @@ function initProfilePage() {
     ratesContainer.innerHTML = profile.rates
       .map(
         (rate) => `
-          <div class="rate-box">
-            <div class="rate-box__price">${rate.price}</div>
-            <div class="rate-box__duration">${rate.label}</div>
-          </div>
+            <div class="rate-box">
+              <div class="rate-box__price">${rate.price}</div>
+              <div class="rate-box__duration">${rate.label}</div>
+            </div>
         `
       )
       .join('');
@@ -579,9 +628,9 @@ function initApartmentsPage() {
         <div class="apt-card__img ${apartment.imageClass}">${apartment.icon}</div>
         <div class="apt-card__body">
           <h3 class="apt-card__title">${apartment.title}</h3>
-          <p class="apt-card__meta">${apartment.city} / ${apartment.area}</p>
+          <p class="apt-card__meta">${localizeCityName(apartment.city)} / ${apartment.area}</p>
           <p class="content-card__text">${apartment.description}</p>
-          <div class="apt-card__price">${apartment.price}</div>
+          <div class="apt-card__price">${localizePriceText(apartment.price)}</div>
         </div>
       </article>
     `
@@ -606,8 +655,8 @@ function populateContactProfiles() {
   if (!profileSelect) return;
 
   const selectedProfile = new URLSearchParams(window.location.search).get('profile') || '';
-  const options = ['<option value="">Select profile</option>'].concat(
-    getProfiles().map((profile) => `<option value="${profile.id}">${profile.name} / ${profile.city}</option>`)
+  const options = [`<option value="">${translateText('contact.selectModel', {}, 'Select model')}</option>`].concat(
+    getProfiles().map((profile) => `<option value="${profile.id}">${profile.name} / ${localizeCityName(profile.city)}</option>`)
   );
 
   profileSelect.innerHTML = options.join('');
@@ -621,20 +670,22 @@ function initForms() {
     event.preventDefault();
     const profileId = Number($('#contact-profile')?.value);
     const profile = getProfileById(profileId);
-    const targetText = profile ? `${profile.name} in ${profile.city}` : 'the team';
-    renderFormStatus(event.currentTarget, `Message sent. We will contact you shortly regarding ${targetText}.`);
+    const targetText = profile
+      ? translateText('dynamic.contactTarget', { name: profile.name, city: localizeCityName(profile.city) }, `${profile.name} in ${profile.city}`)
+      : translateText('dynamic.team', {}, 'the team');
+    renderFormStatus(event.currentTarget, translateText('dynamic.contactStatus', { target: targetText }, `Message sent. We will contact you shortly regarding ${targetText}.`));
     event.currentTarget.reset();
     populateContactProfiles();
   });
 
   $('#signin-form')?.addEventListener('submit', (event) => {
     event.preventDefault();
-    renderFormStatus(event.currentTarget, 'Demo sign in completed. Connect the real backend auth flow next.');
+    renderFormStatus(event.currentTarget, translateText('dynamic.signInStatus', {}, 'Demo sign in completed. Connect the real backend auth flow next.'));
   });
 
   $('#signup-form')?.addEventListener('submit', (event) => {
     event.preventDefault();
-    renderFormStatus(event.currentTarget, 'Registration request sent. A manager can now review the listing details.');
+    renderFormStatus(event.currentTarget, translateText('dynamic.signUpStatus', {}, 'Registration request sent. A manager can now review the listing details.'));
   });
 }
 
@@ -673,6 +724,7 @@ function initAnimations() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  window.applyDocumentLanguageState?.();
   initAgeGate();
   initHeader();
   initViewToggle();
@@ -696,4 +748,6 @@ document.addEventListener('DOMContentLoaded', () => {
     default:
       break;
   }
+
+  window.applyTranslations?.();
 });

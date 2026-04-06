@@ -219,10 +219,33 @@ ul { list-style: none; }
   border-radius: var(--radius-lg); padding: 8px;
   margin-bottom: 24px; box-shadow: 0 8px 32px rgba(0,0,0,.4);
 }
-.search-bar__field { flex: 1; display: flex; align-items: center; gap: 8px; padding: 0 16px; color: var(--text-3); }
+.search-bar__field {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+  color: var(--text-2);
+  transition: var(--transition);
+}
 .search-bar__field + .search-bar__field { border-left: 1px solid var(--border); }
-.search-bar__icon { width: 18px; height: 18px; flex-shrink: 0; color: var(--text-3); }
-.search-bar__select { flex: 1; background: transparent; border: none; outline: none; color: var(--text); font-family: var(--font); font-size: 14px; cursor: pointer; appearance: none; }
+.search-bar__field:hover,
+.search-bar__field:focus-within {
+  color: var(--text);
+}
+.search-bar__icon { width: 18px; height: 18px; flex-shrink: 0; color: currentColor; }
+.search-bar__select {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  appearance: none;
+}
 .search-bar__select option { background: var(--bg-3); color: var(--text); }
 
 .hero__tags { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px; }
@@ -726,4 +749,50 @@ ul { list-style: none; }
     flex-direction: column;
     align-items: flex-start;
   }
+}
+
+html[dir="rtl"] body {
+  direction: rtl;
+  text-align: right;
+}
+
+html[dir="rtl"] .header__inner {
+  flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .header__nav {
+  margin-left: 0;
+  margin-right: 16px;
+}
+
+html[dir="rtl"] .header__controls {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+html[dir="rtl"] .search-bar__field + .search-bar__field {
+  border-left: none;
+  border-right: 1px solid var(--border);
+}
+
+html[dir="rtl"] .search-bar__field {
+  flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .lang-switcher__dropdown {
+  left: 0;
+  right: auto;
+  text-align: right;
+}
+
+html[dir="rtl"] .mobile-drawer__nav,
+html[dir="rtl"] .content-card,
+html[dir="rtl"] .contact-form,
+html[dir="rtl"] .profile-details,
+html[dir="rtl"] .footer {
+  text-align: right;
+}
+
+html[dir="rtl"] .breadcrumb-bar__inner {
+  flex-direction: row-reverse;
 }
