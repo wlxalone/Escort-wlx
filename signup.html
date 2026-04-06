@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up | EliteConnect</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+</head>
+<body data-page="signup">
+
+  <div id="age-gate" class="age-gate">
+    <div class="age-gate__backdrop"></div>
+    <div class="age-gate__box">
+      <div class="age-gate__logo">EC</div>
+      <h2 class="age-gate__title">Age Verification Required</h2>
+      <p class="age-gate__text">This website contains adult content intended for visitors aged 18 years or older.</p>
+      <div class="age-gate__actions">
+        <button id="age-gate-yes" class="btn btn--primary btn--lg" type="button">I am 18+ - Enter</button>
+        <button id="age-gate-no" class="btn btn--ghost btn--lg" type="button">I am under 18 - Leave</button>
+      </div>
+    </div>
+  </div>
+
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="index.html" class="header__logo">
+        <span class="header__logo-text"><span class="header__logo-accent">Elite</span>Connect</span>
+      </a>
+      <nav class="header__nav">
+        <a href="index.html" data-nav="home" class="header__nav-link">Home</a>
+        <a href="about.html" data-nav="about" class="header__nav-link">About us</a>
+        <a href="escort.html" data-nav="escort" class="header__nav-link">Escort</a>
+        <a href="apartments.html" data-nav="apartments" class="header__nav-link">Apartments</a>
+        <a href="contact.html" data-nav="contact" class="header__nav-link">Contact</a>
+      </nav>
+      <div class="header__controls">
+        <div class="lang-switcher" id="lang-switcher">
+          <button class="lang-switcher__btn" type="button">
+            <svg viewBox="0 0 20 20" fill="none" width="16" height="16" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.4"/><path d="M10 2c-2 2.5-3 5-3 8s1 5.5 3 8M10 2c2 2.5 3 5 3 8s-1 5.5-3 8M2 10h16" stroke="currentColor" stroke-width="1.4"/></svg>
+            <span id="current-lang">EN</span>
+            <svg class="lang-switcher__arrow" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </button>
+          <ul class="lang-switcher__dropdown" id="lang-dropdown">
+            <li><button data-lang="EN" type="button">English</button></li>
+            <li><button data-lang="PL" type="button">Polski</button></li>
+            <li><button data-lang="DE" type="button">Deutsch</button></li>
+            <li><button data-lang="RU" type="button">Russian</button></li>
+          </ul>
+        </div>
+        <a href="signin.html" class="header__signin">Sign In</a>
+        <a href="signup.html" class="btn btn--primary btn--sm">Sign Up</a>
+        <button class="header__burger" id="burger" aria-label="Open menu" type="button">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-drawer" id="mobile-drawer">
+    <nav class="mobile-drawer__nav">
+      <a href="index.html" class="mobile-drawer__link">Home</a>
+      <a href="about.html" class="mobile-drawer__link">About us</a>
+      <a href="escort.html" class="mobile-drawer__link">Escort</a>
+      <a href="apartments.html" class="mobile-drawer__link">Apartments</a>
+      <a href="contact.html" class="mobile-drawer__link">Contact</a>
+      <hr class="mobile-drawer__divider"/>
+      <a href="signup.html" class="btn btn--primary btn--full">Sign Up</a>
+    </nav>
+  </div>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <h1 class="page-hero__title">Create an Account</h1>
+        <p class="page-hero__sub">Register a new profile or request featured placement inside the catalog.</p>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <div class="container">
+        <div class="content-grid">
+          <div class="content-card">
+            <div class="content-card__icon">A</div>
+            <h3 class="content-card__title">Create profile</h3>
+            <p class="content-card__text">Add contact details, city, gallery and profile summary in a single onboarding form.</p>
+          </div>
+          <div class="content-card">
+            <div class="content-card__icon">B</div>
+            <h3 class="content-card__title">Await moderation</h3>
+            <p class="content-card__text">In a production version the listing would enter moderation before it becomes visible in the catalog.</p>
+          </div>
+        </div>
+
+        <form class="contact-form" id="signup-form">
+          <h2 class="contact-form__title">Registration Request</h2>
+          <p class="contact-form__sub">This demo collects listing information and completes the front-end flow.</p>
+          <div class="form-group">
+            <label class="form-label" for="signup-name">Display name</label>
+            <input class="form-input" id="signup-name" type="text" placeholder="Profile or company name" required/>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="signup-email">Email</label>
+            <input class="form-input" id="signup-email" type="email" placeholder="name@example.com" required/>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="signup-city">City</label>
+            <select class="form-select" id="signup-city">
+              <option value="">Select city</option>
+              <option value="Warsaw">Warsaw</option>
+              <option value="Krakow">Krakow</option>
+              <option value="Gdansk">Gdansk</option>
+              <option value="Wroclaw">Wroclaw</option>
+              <option value="Poznan">Poznan</option>
+              <option value="Lodz">Lodz</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="signup-type">Account type</label>
+            <select class="form-select" id="signup-type">
+              <option value="independent">Independent profile</option>
+              <option value="agency">Agency</option>
+              <option value="apartments">Apartment host</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="signup-about">Short description</label>
+            <textarea class="form-textarea" id="signup-about" placeholder="Tell us about the listing" required></textarea>
+          </div>
+          <button class="btn btn--primary btn--lg" type="submit">Create Account</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="index.html" class="header__logo footer__logo-link">
+            <span class="header__logo-text"><span class="header__logo-accent">Elite</span>Connect</span>
+          </a>
+          <p class="footer__tagline">Premium verified companionship platform focused on discretion, elegant design and direct contact.</p>
+        </div>
+        <div class="footer__col"><h4 class="footer__col-title">Browse</h4><ul class="footer__links"><li><a href="escort.html">All profiles</a></li><li><a href="escort.html?filter=vip">VIP</a></li><li><a href="escort.html?filter=new">New faces</a></li><li><a href="escort.html?filter=online">Online now</a></li></ul></div>
+        <div class="footer__col"><h4 class="footer__col-title">Cities</h4><ul class="footer__links"><li><a href="escort.html?city=Warsaw">Warsaw</a></li><li><a href="escort.html?city=Krakow">Krakow</a></li><li><a href="escort.html?city=Gdansk">Gdansk</a></li><li><a href="escort.html?city=Wroclaw">Wroclaw</a></li></ul></div>
+        <div class="footer__col"><h4 class="footer__col-title">Info</h4><ul class="footer__links"><li><a href="about.html">About us</a></li><li><a href="apartments.html">Apartments</a></li><li><a href="contact.html">Contact</a></li><li><a href="signup.html">Post an ad</a></li></ul></div>
+        <div class="footer__col"><h4 class="footer__col-title">Account</h4><ul class="footer__links"><li><a href="signin.html">Sign in</a></li><li><a href="signup.html">Sign up</a></li></ul></div>
+      </div>
+      <div class="footer__bottom">
+        <p class="footer__disclaimer">This website contains adult content intended for visitors aged 18+ only. All listings are demo data for presentation purposes.</p>
+        <p class="footer__copy">(c) 2026 EliteConnect. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
