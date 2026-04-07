@@ -446,12 +446,12 @@ ul { list-style: none; }
 .city-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,.5); border-color: rgba(247,37,133,.3); }
 .city-card__img { width: 100%; height: 100%; transition: transform .4s ease; }
 .city-card:hover .city-card__img { transform: scale(1.06); }
-.city-card__img--warsaw  { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%); }
-.city-card__img--krakow  { background: linear-gradient(135deg, #2d1b1b 0%, #3d2020 40%, #5c2a2a 100%); }
-.city-card__img--gdansk  { background: linear-gradient(135deg, #0d2137 0%, #103354 40%, #1a4a70 100%); }
-.city-card__img--wroclaw { background: linear-gradient(135deg, #1a2e1a 0%, #1e3b1e 40%, #2a5a2a 100%); }
-.city-card__img--poznan  { background: linear-gradient(135deg, #2a1a2e 0%, #3a2040 40%, #5a2d60 100%); }
-.city-card__img--lodz    { background: linear-gradient(135deg, #2e2a1a 0%, #3e3520 40%, #5a4d2a 100%); }
+.city-card__img--dubai    { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%); }
+.city-card__img--abudhabi { background: linear-gradient(135deg, #2d1b1b 0%, #3d2020 40%, #5c2a2a 100%); }
+.city-card__img--sharjah  { background: linear-gradient(135deg, #0d2137 0%, #103354 40%, #1a4a70 100%); }
+.city-card__img--ajman    { background: linear-gradient(135deg, #1a2e1a 0%, #1e3b1e 40%, #2a5a2a 100%); }
+.city-card__img--rak      { background: linear-gradient(135deg, #2a1a2e 0%, #3a2040 40%, #5a2d60 100%); }
+.city-card__img--fujairah { background: linear-gradient(135deg, #2e2a1a 0%, #3e3520 40%, #5a4d2a 100%); }
 .city-card__overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,.85)); padding: 32px 18px 18px; display: flex; flex-direction: column; }
 .city-card__name { font-size: 18px; font-weight: 700; color: #fff; }
 .city-card__count { font-size: 13px; color: var(--accent-3); margin-top: 2px; }

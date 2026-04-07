@@ -603,9 +603,9 @@
   };
 
   const CITY_LABELS = {
-    EN: { Warsaw: 'Warsaw', Krakow: 'Krakow', Gdansk: 'Gdansk', Wroclaw: 'Wroclaw', Poznan: 'Poznan', Lodz: 'Lodz' },
-    AR: { Warsaw: 'وارسو', Krakow: 'كراكوف', Gdansk: 'غدانسك', Wroclaw: 'فروتسواف', Poznan: 'بوزنان', Lodz: 'لودز' },
-    RU: { Warsaw: 'Варшава', Krakow: 'Краков', Gdansk: 'Гданьск', Wroclaw: 'Вроцлав', Poznan: 'Познань', Lodz: 'Лодзь' }
+    EN: { Dubai: 'Dubai', 'Abu Dhabi': 'Abu Dhabi', Sharjah: 'Sharjah', Ajman: 'Ajman', 'Ras Al Khaimah': 'Ras Al Khaimah', Fujairah: 'Fujairah' },
+    AR: { Dubai: 'دبي', 'Abu Dhabi': 'أبو ظبي', Sharjah: 'الشارقة', Ajman: 'عجمان', 'Ras Al Khaimah': 'رأس الخيمة', Fujairah: 'الفجيرة' },
+    RU: { Dubai: 'Дубай', 'Abu Dhabi': 'Абу-Даби', Sharjah: 'Шарджа', Ajman: 'Аджман', 'Ras Al Khaimah': 'Рас-эль-Хайма', Fujairah: 'Фуджейра' }
   };
 
   function resolvePath(source, path) {
@@ -792,8 +792,8 @@
     setText('.hero__tag-label', t('common.popular'));
 
     const tags = Array.from(document.querySelectorAll('.tag'));
-    if (tags[0]) tags[0].textContent = localizeCity('Warsaw');
-    if (tags[1]) tags[1].textContent = localizeCity('Krakow');
+    if (tags[0]) tags[0].textContent = localizeCity('Dubai');
+    if (tags[1]) tags[1].textContent = localizeCity('Abu Dhabi');
     if (tags[2]) tags[2].textContent = t('badges.vip');
     if (tags[3]) tags[3].textContent = t('home.tagNewToday');
     if (tags[4]) tags[4].textContent = t('common.onlineNow');
