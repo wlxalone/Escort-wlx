@@ -941,10 +941,50 @@ main { animation-delay: .08s; }
   overflow: hidden;
 }
 
+body[data-page="escort"]::before,
+body[data-page="escort"]::after {
+  content: '';
+  position: fixed;
+  top: var(--header-h);
+  bottom: 0;
+  width: min(23vw, 340px);
+  min-width: 220px;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    linear-gradient(180deg, rgba(10,8,14,.08), rgba(10,8,14,.74)),
+    linear-gradient(90deg, rgba(247,37,133,.26), transparent 16%, transparent 84%, rgba(247,37,133,.26)),
+    linear-gradient(90deg, transparent calc(50% - 1px), rgba(255,255,255,.18) 50%, transparent calc(50% + 1px)),
+    url('assets/images/escort-side-model.jpg') center / cover no-repeat;
+  box-shadow:
+    inset 0 0 80px rgba(0,0,0,.68),
+    0 0 0 1px rgba(247,37,133,.16);
+  opacity: .88;
+}
+
+body[data-page="escort"]::before {
+  left: clamp(20px, 5vw, 70px);
+  background-position: center center;
+}
+
+body[data-page="escort"]::after {
+  right: clamp(20px, 5vw, 70px);
+  transform: scaleX(-1);
+  background-position: center center;
+}
+
+body[data-page="escort"] .header,
+body[data-page="escort"] main,
+body[data-page="escort"] .footer {
+  position: relative;
+  z-index: 1;
+}
+
 .escort-page::before {
   content: '';
   position: absolute;
   inset: 0;
+  z-index: 0;
   background:
     radial-gradient(circle at 50% 0%, rgba(247,37,133,.12), transparent 28%),
     radial-gradient(circle at 15% 18%, rgba(114,9,183,.08), transparent 20%),
@@ -954,70 +994,21 @@ main { animation-delay: .08s; }
 
 .escort-shell__container {
   position: relative;
-  max-width: 1560px;
+  z-index: 1;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 18px;
+  padding: 0 20px;
 }
 
 .escort-layout {
-  display: grid;
-  grid-template-columns: minmax(180px, 240px) minmax(0, 1040px) minmax(180px, 240px);
-  gap: 30px;
-  align-items: start;
+  max-width: 1020px;
+  margin: 0 auto;
 }
 
 .escort-main {
-  min-width: 0;
-}
-
-.escort-side {
-  position: sticky;
-  top: calc(var(--header-h) + 26px);
-  height: calc(100vh - var(--header-h) - 52px);
-  min-height: 640px;
-  border-radius: 28px;
-  overflow: hidden;
-  background: #110d16;
-  border: 1px solid rgba(247,37,133,.18);
-  box-shadow:
-    0 24px 60px rgba(0,0,0,.45),
-    inset 0 0 0 1px rgba(255,255,255,.03);
-}
-
-.escort-side::before {
-  content: '';
-  position: absolute;
-  inset: 0;
+  position: relative;
   z-index: 1;
-  background:
-    linear-gradient(180deg, rgba(12,8,16,.18), rgba(12,8,16,.62)),
-    linear-gradient(90deg, rgba(247,37,133,.2), transparent 16%, transparent 84%, rgba(247,37,133,.2));
-  pointer-events: none;
-}
-
-.escort-side::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  width: 2px;
-  transform: translateX(-50%);
-  background: linear-gradient(180deg, rgba(247,37,133,.04), rgba(255,255,255,.28), rgba(247,37,133,.04));
-  box-shadow: 0 0 24px rgba(255,255,255,.18);
-  pointer-events: none;
-}
-
-.escort-side img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center center;
-  filter: saturate(.92) brightness(.72);
-}
-
-.escort-side--right img {
-  transform: scaleX(-1);
+  min-width: 0;
 }
 
 .escort-hero {
@@ -1231,10 +1222,6 @@ main { animation-delay: .08s; }
   .footer__top { grid-template-columns: 1fr 1fr 1fr; }
   .footer__brand { grid-column: 1 / -1; }
   .profile-layout { grid-template-columns: 50% 1fr; gap: 32px; }
-  .escort-layout {
-    grid-template-columns: minmax(160px, 210px) minmax(0, 1fr) minmax(160px, 210px);
-    gap: 20px;
-  }
   .escort-page .profiles-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -1273,8 +1260,6 @@ main { animation-delay: .08s; }
   .profile-details { position: static; }
   .content-grid { grid-template-columns: 1fr; }
   .apartments-grid { grid-template-columns: repeat(2, 1fr); }
-  .escort-layout { grid-template-columns: 1fr; }
-  .escort-side { display: none; }
   .escort-shell__container { padding: 0 20px; }
   .escort-filter-panel__grid { grid-template-columns: 1fr 1fr; }
   .escort-filter-actions { grid-column: 1 / -1; }
@@ -1317,6 +1302,10 @@ main { animation-delay: .08s; }
   .about-feature__icon { width: 44px; height: 44px; }
   .about-feature__title { font-size: 20px; }
   .about-feature__text { font-size: 15px; }
+  body[data-page="escort"]::before,
+  body[data-page="escort"]::after {
+    display: none;
+  }
 }
 @media (max-width: 420px) {
   .cities-grid { grid-template-columns: 1fr; }
