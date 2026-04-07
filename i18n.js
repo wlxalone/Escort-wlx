@@ -23,10 +23,10 @@
         signup: 'Sign Up | EliteConnect'
       },
       common: {
-        ageGateTitle: 'Age Verification Required',
-        ageGateText: 'This website contains adult content intended for visitors aged 18 years or older.',
-        ageGateEnter: 'I am 18+ - Enter',
-        ageGateLeave: 'I am under 18 - Leave',
+        ageGateTitle: 'Age Verification',
+        ageGateText: 'You must be 18 years or older to enter this website. By clicking "Enter", you confirm you are of legal age.',
+        ageGateEnter: 'Enter',
+        ageGateLeave: 'Exit',
         navHome: 'Home',
         navAbout: 'About us',
         navEscort: 'Models',
@@ -221,10 +221,10 @@
       signup: 'إنشاء حساب | EliteConnect'
     },
     common: {
-      ageGateTitle: 'يتطلب التحقق من العمر',
-      ageGateText: 'يحتوي هذا الموقع على محتوى للبالغين ومخصص للزوار الذين تبلغ أعمارهم 18 عامًا أو أكثر.',
-      ageGateEnter: 'عمري 18+ - دخول',
-      ageGateLeave: 'أنا أقل من 18 - خروج',
+      ageGateTitle: 'التحقق من العمر',
+      ageGateText: 'يجب أن يكون عمرك 18 عامًا أو أكثر للدخول إلى هذا الموقع. بالنقر على "دخول"، فإنك تؤكد أنك في السن القانونية.',
+      ageGateEnter: 'دخول',
+      ageGateLeave: 'خروج',
       navHome: 'الرئيسية',
       navAbout: 'من نحن',
       navEscort: 'الموديلات',
@@ -418,10 +418,10 @@
       signup: 'Регистрация | EliteConnect'
     },
     common: {
-      ageGateTitle: 'Требуется подтверждение возраста',
-      ageGateText: 'Этот сайт содержит контент для взрослых и предназначен для посетителей старше 18 лет.',
-      ageGateEnter: 'Мне 18+ - Войти',
-      ageGateLeave: 'Мне нет 18 - Уйти',
+      ageGateTitle: 'Подтверждение возраста',
+      ageGateText: 'Вам должно быть 18 лет или больше, чтобы войти на этот сайт. Нажимая "Войти", вы подтверждаете, что достигли совершеннолетия.',
+      ageGateEnter: 'Войти',
+      ageGateLeave: 'Выйти',
       navHome: 'Главная',
       navAbout: 'О нас',
       navEscort: 'Модели',
