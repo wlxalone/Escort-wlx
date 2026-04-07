@@ -1199,6 +1199,7 @@ body[data-page="escort"] .footer {
 .escort-page .profile-card--editorial .profile-card__img-wrap {
   aspect-ratio: 0.67;
   min-height: 410px;
+  container-type: inline-size;
   border-radius: 18px;
   border: 1px solid rgba(255,255,255,.12);
   box-shadow:
@@ -1250,17 +1251,17 @@ body[data-page="escort"] .footer {
 
 .profile-card__gallery-stack {
   position: absolute;
-  top: 64px;
-  right: 14px;
+  top: 58px;
+  right: 12px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 9px;
   pointer-events: none;
 }
 
 .profile-card__gallery-item {
-  width: 54px;
-  height: 54px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   overflow: hidden;
   border: 2px solid rgba(247,37,133,.72);
@@ -1284,25 +1285,29 @@ body[data-page="escort"] .footer {
   padding: 0 18px 18px;
 }
 
+.profile-card__editorial-copy {
+  max-width: min(60%, calc(100% - 92px));
+}
+
 .profile-card__editorial-name {
-  font-size: clamp(28px, 2.4vw, 42px);
+  font-size: clamp(22px, 2.2vw, 34px);
   font-weight: 800;
   line-height: .95;
   letter-spacing: -.04em;
   color: #fff;
-  margin-bottom: 10px;
-}
-
-.profile-card__editorial-line {
-  font-size: 14px;
-  line-height: 1.5;
-  color: rgba(255,255,255,.78);
   margin-bottom: 8px;
 }
 
+.profile-card__editorial-line {
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(255,255,255,.78);
+  margin-bottom: 7px;
+}
+
 .profile-card__editorial-price {
-  margin-bottom: 18px;
-  font-size: 15px;
+  margin-bottom: 14px;
+  font-size: 14px;
   font-weight: 800;
   color: #ff4fa7;
   text-shadow: 0 0 18px rgba(247,37,133,.18);
@@ -1311,20 +1316,20 @@ body[data-page="escort"] .footer {
 .profile-card__editorial-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 10px;
 }
 
 .profile-card__editorial-btn {
-  min-height: 72px;
+  min-height: 64px;
   border-radius: 999px;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 700;
   line-height: 1.25;
-  padding: 12px 16px;
+  padding: 10px 14px;
   transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
 }
 
@@ -1369,6 +1374,55 @@ body[data-page="escort"] .footer {
 .escort-page .profiles-grid.list-mode .profile-card--editorial .profile-card__img-wrap {
   width: 100%;
   aspect-ratio: 0.67;
+}
+
+@container (max-width: 300px) {
+  .profile-card__gallery-stack {
+    top: 54px;
+    right: 10px;
+    gap: 7px;
+  }
+
+  .profile-card__gallery-item {
+    width: 40px;
+    height: 40px;
+    box-shadow:
+      0 8px 16px rgba(0,0,0,.24),
+      0 0 0 2px rgba(255,255,255,.08);
+  }
+
+  .profile-card__editorial {
+    padding: 0 14px 14px;
+  }
+
+  .profile-card__editorial-copy {
+    max-width: min(58%, calc(100% - 82px));
+  }
+
+  .profile-card__editorial-name {
+    font-size: 18px;
+    margin-bottom: 6px;
+  }
+
+  .profile-card__editorial-line {
+    font-size: 12px;
+    margin-bottom: 5px;
+  }
+
+  .profile-card__editorial-price {
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+
+  .profile-card__editorial-actions {
+    gap: 8px;
+  }
+
+  .profile-card__editorial-btn {
+    min-height: 54px;
+    font-size: 13px;
+    padding: 8px 10px;
+  }
 }
 
 .contact-form { background: var(--bg-3); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 48px; max-width: 640px; margin: 0 auto; }
@@ -1487,24 +1541,27 @@ body[data-page="escort"] .footer {
   .escort-page .profiles-grid { grid-template-columns: 1fr; }
   .escort-page .profile-card--editorial .profile-card__img-wrap { min-height: 420px; }
   .profile-card__gallery-stack {
-    top: 66px;
-    right: 14px;
+    top: 58px;
+    right: 12px;
     gap: 8px;
   }
   .profile-card__gallery-item {
-    width: 50px;
-    height: 50px;
+    width: 44px;
+    height: 44px;
   }
   .profile-card__editorial {
     padding: 0 16px 16px;
   }
-  .profile-card__editorial-name { font-size: 22px; }
+  .profile-card__editorial-copy {
+    max-width: min(58%, calc(100% - 84px));
+  }
+  .profile-card__editorial-name { font-size: 19px; }
   .profile-card__editorial-line { font-size: 13px; }
-  .profile-card__editorial-price { font-size: 14px; margin-bottom: 14px; }
+  .profile-card__editorial-price { font-size: 13px; margin-bottom: 12px; }
   .profile-card__editorial-actions { gap: 10px; }
   .profile-card__editorial-btn {
-    min-height: 66px;
-    font-size: 15px;
+    min-height: 56px;
+    font-size: 13px;
   }
   .about-page__title { font-size: clamp(34px, 12vw, 48px); }
   .about-page__lead { margin-top: 16px; font-size: 15px; }

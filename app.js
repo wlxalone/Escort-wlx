@@ -217,9 +217,11 @@ function createProfileCard(profile) {
         <button class="profile-card__fav${isSaved ? ' active' : ''}" type="button">${isSaved ? '&#9829;' : '&#9825;'}</button>
         <div class="profile-card__gallery-stack">${galleryPreview}</div>
         <div class="profile-card__editorial">
-          <h3 class="profile-card__editorial-name">${profile.name}</h3>
-          <p class="profile-card__editorial-line">${escortMeta}</p>
-          <div class="profile-card__editorial-price">${getPrimaryRate(profile)}</div>
+          <div class="profile-card__editorial-copy">
+            <h3 class="profile-card__editorial-name">${profile.name}</h3>
+            <p class="profile-card__editorial-line">${escortMeta}</p>
+            <div class="profile-card__editorial-price">${getPrimaryRate(profile)}</div>
+          </div>
           <div class="profile-card__editorial-actions">
             <a href="profile.html?id=${profile.id}" class="profile-card__editorial-btn profile-card__editorial-btn--ghost">${translateText('dynamic.moreDetails', {}, 'More Details')}</a>
             <a href="contact.html?profile=${profile.id}" class="profile-card__editorial-btn profile-card__editorial-btn--primary">${translateText('dynamic.bookNow', {}, 'Book')}</a>
