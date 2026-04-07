@@ -1251,17 +1251,19 @@ body[data-page="escort"] .footer {
 
 .profile-card__gallery-stack {
   position: absolute;
-  top: 52px;
-  right: 12px;
+  top: 24px;
+  right: 16px;
+  width: 52px;
   display: flex;
   flex-direction: column;
-  gap: 9px;
+  align-items: center;
+  gap: 10px;
   pointer-events: none;
 }
 
 .profile-card__gallery-item {
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   overflow: hidden;
   border: 2px solid rgba(247,37,133,.72);
@@ -1280,7 +1282,7 @@ body[data-page="escort"] .footer {
 .profile-card__editorial {
   position: absolute;
   left: 0;
-  right: 76px;
+  right: 88px;
   bottom: 0;
   padding: 0 14px 16px;
 }
@@ -1378,9 +1380,10 @@ body[data-page="escort"] .footer {
 
 @container (max-width: 300px) {
   .profile-card__gallery-stack {
-    top: 48px;
-    right: 10px;
-    gap: 7px;
+    top: 22px;
+    right: 12px;
+    width: 44px;
+    gap: 8px;
   }
 
   .profile-card__gallery-item {
@@ -1392,7 +1395,7 @@ body[data-page="escort"] .footer {
   }
 
   .profile-card__editorial {
-    right: 60px;
+    right: 56px;
     padding: 0 12px 12px;
   }
 
@@ -1542,8 +1545,9 @@ body[data-page="escort"] .footer {
   .escort-page .profiles-grid { grid-template-columns: 1fr; }
   .escort-page .profile-card--editorial .profile-card__img-wrap { min-height: 420px; }
   .profile-card__gallery-stack {
-    top: 52px;
-    right: 12px;
+    top: 24px;
+    right: 14px;
+    width: 48px;
     gap: 8px;
   }
   .profile-card__gallery-item {
@@ -1551,7 +1555,7 @@ body[data-page="escort"] .footer {
     height: 44px;
   }
   .profile-card__editorial {
-    right: 62px;
+    right: 64px;
     padding: 0 14px 14px;
   }
   .profile-card__editorial-copy {
