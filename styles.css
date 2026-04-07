@@ -1251,7 +1251,7 @@ body[data-page="escort"] .footer {
 
 .profile-card__gallery-stack {
   position: absolute;
-  top: 58px;
+  top: 52px;
   right: 12px;
   display: flex;
   flex-direction: column;
@@ -1280,17 +1280,17 @@ body[data-page="escort"] .footer {
 .profile-card__editorial {
   position: absolute;
   left: 0;
-  right: 0;
+  right: 76px;
   bottom: 0;
-  padding: 0 18px 18px;
+  padding: 0 14px 16px;
 }
 
 .profile-card__editorial-copy {
-  max-width: min(60%, calc(100% - 92px));
+  max-width: none;
 }
 
 .profile-card__editorial-name {
-  font-size: clamp(22px, 2.2vw, 34px);
+  font-size: clamp(24px, 2.3vw, 34px);
   font-weight: 800;
   line-height: .95;
   letter-spacing: -.04em;
@@ -1320,7 +1320,7 @@ body[data-page="escort"] .footer {
 }
 
 .profile-card__editorial-btn {
-  min-height: 64px;
+  min-height: 58px;
   border-radius: 999px;
   display: flex;
   align-items: center;
@@ -1378,7 +1378,7 @@ body[data-page="escort"] .footer {
 
 @container (max-width: 300px) {
   .profile-card__gallery-stack {
-    top: 54px;
+    top: 48px;
     right: 10px;
     gap: 7px;
   }
@@ -1392,15 +1392,16 @@ body[data-page="escort"] .footer {
   }
 
   .profile-card__editorial {
-    padding: 0 14px 14px;
+    right: 60px;
+    padding: 0 12px 12px;
   }
 
   .profile-card__editorial-copy {
-    max-width: min(58%, calc(100% - 82px));
+    max-width: none;
   }
 
   .profile-card__editorial-name {
-    font-size: 18px;
+    font-size: 20px;
     margin-bottom: 6px;
   }
 
@@ -1419,7 +1420,7 @@ body[data-page="escort"] .footer {
   }
 
   .profile-card__editorial-btn {
-    min-height: 54px;
+    min-height: 50px;
     font-size: 13px;
     padding: 8px 10px;
   }
@@ -1541,7 +1542,7 @@ body[data-page="escort"] .footer {
   .escort-page .profiles-grid { grid-template-columns: 1fr; }
   .escort-page .profile-card--editorial .profile-card__img-wrap { min-height: 420px; }
   .profile-card__gallery-stack {
-    top: 58px;
+    top: 52px;
     right: 12px;
     gap: 8px;
   }
@@ -1550,17 +1551,18 @@ body[data-page="escort"] .footer {
     height: 44px;
   }
   .profile-card__editorial {
-    padding: 0 16px 16px;
+    right: 62px;
+    padding: 0 14px 14px;
   }
   .profile-card__editorial-copy {
-    max-width: min(58%, calc(100% - 84px));
+    max-width: none;
   }
-  .profile-card__editorial-name { font-size: 19px; }
+  .profile-card__editorial-name { font-size: 21px; }
   .profile-card__editorial-line { font-size: 13px; }
   .profile-card__editorial-price { font-size: 13px; margin-bottom: 12px; }
   .profile-card__editorial-actions { gap: 10px; }
   .profile-card__editorial-btn {
-    min-height: 56px;
+    min-height: 52px;
     font-size: 13px;
   }
   .about-page__title { font-size: clamp(34px, 12vw, 48px); }
