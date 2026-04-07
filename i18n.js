@@ -14,7 +14,7 @@
       titles: {
         home: 'EliteConnect - Premium Models',
         about: 'About Us | EliteConnect',
-        escort: 'Models Directory | EliteConnect',
+        escort: 'Escort Profiles | EliteConnect',
         apartments: 'Apartments | EliteConnect',
         contact: 'Contact | EliteConnect',
         profile: 'Model Profile | EliteConnect',
@@ -29,7 +29,7 @@
         ageGateLeave: 'Exit',
         navHome: 'Home',
         navAbout: 'About us',
-        navEscort: 'Models',
+        navEscort: 'Escort',
         navApartments: 'Apartments',
         navContact: 'Contact',
         signIn: 'Sign In',
@@ -46,11 +46,16 @@
         disclaimer: 'This website contains adult content intended for visitors aged 18+ only. All listings are demo data for presentation purposes.',
         copy: '(c) 2026 EliteConnect. All rights reserved.',
         selectCity: 'Select city',
+        allCities: 'All Cities',
         ageRange: 'Age range',
         anyAge: 'Any age',
         category: 'Category',
         anyCategory: 'Any category',
         search: 'Search',
+        min: 'Min',
+        max: 'Max',
+        reset: 'Reset',
+        apply: 'Apply',
         popular: 'Popular:',
         all: 'All',
         new: 'New',
@@ -84,11 +89,16 @@
         ctaSecondary: 'Learn More'
       },
       escort: {
-        pageTitle: 'Models Directory',
-        pageSub: 'Filter by city, age, category and keywords. Every card opens a working model page.',
-        queryPlaceholder: 'Search name, city or tag',
-        emptyTitle: 'No models found',
-        emptyText: 'Try another city or clear some filters.'
+        pageTitle: 'Escort Profiles',
+        pageSub: 'Here you will find the list of our beautiful escorts across the UAE.',
+        cityLabel: 'City',
+        ageLabel: 'Age',
+        heightLabel: 'Height (cm)',
+        weightLabel: 'Weight (kg)',
+        bustLabel: 'Bust Size',
+        bustPlaceholder: 'B, C, D',
+        emptyTitle: 'No escorts found',
+        emptyText: 'Try another city or widen the filters.'
       },
       about: {
         pageTitle: 'Our Agency & Rules',
@@ -171,11 +181,11 @@
         related: 'Similar Models'
       },
       dynamic: {
-        noModelsFound: 'No models found',
-        showingModels: 'Showing {{visible}} of {{total}} models',
-        loadMoreModels: 'Load More Models',
-        allModelsLoaded: 'All models loaded',
-        cityCount: '{{count}} models',
+        noModelsFound: 'No profiles found',
+        showingModels: 'Showing {{visible}} of {{total}} profiles',
+        loadMoreModels: 'Load More Profiles',
+        allModelsLoaded: 'All profiles loaded',
+        cityCount: '{{count}} profiles',
         messageButton: 'Message',
         viewProfile: 'View Profile',
         openProfileAria: 'Open {{name}} profile',
@@ -209,7 +219,7 @@
     titles: {
       home: 'EliteConnect - موديلات بريميوم',
       about: 'من نحن | EliteConnect',
-      escort: 'دليل الموديلات | EliteConnect',
+      escort: 'ملفات المرافقة | EliteConnect',
       apartments: 'الشقق | EliteConnect',
       contact: 'اتصل بنا | EliteConnect',
       profile: 'ملف الموديل | EliteConnect',
@@ -224,7 +234,7 @@
       ageGateLeave: 'خروج',
       navHome: 'الرئيسية',
       navAbout: 'من نحن',
-      navEscort: 'الموديلات',
+      navEscort: 'مرافقة',
       navApartments: 'الشقق',
       navContact: 'اتصل بنا',
       signIn: 'تسجيل الدخول',
@@ -241,11 +251,16 @@
       disclaimer: 'يحتوي هذا الموقع على محتوى للبالغين 18+ فقط. جميع القوائم المعروضة بيانات تجريبية لأغراض العرض.',
       copy: '© 2026 EliteConnect. جميع الحقوق محفوظة.',
       selectCity: 'اختر المدينة',
+      allCities: 'كل المدن',
       ageRange: 'الفئة العمرية',
       anyAge: 'أي عمر',
       category: 'الفئة',
       anyCategory: 'أي فئة',
       search: 'بحث',
+      min: 'الحد الأدنى',
+      max: 'الحد الأقصى',
+      reset: 'إعادة',
+      apply: 'تطبيق',
       popular: 'الأكثر شيوعًا:',
       all: 'الكل',
       new: 'جديد',
@@ -279,11 +294,16 @@
       ctaSecondary: 'اعرف المزيد'
     },
     escort: {
-      pageTitle: 'دليل الموديلات',
-      pageSub: 'قم بالتصفية حسب المدينة والعمر والفئة والكلمات المفتاحية. كل بطاقة تفتح صفحة موديل جاهزة.',
-      queryPlaceholder: 'ابحث بالاسم أو المدينة أو الوسم',
-      emptyTitle: 'لم يتم العثور على موديلات',
-      emptyText: 'جرّب مدينة أخرى أو أزل بعض الفلاتر.'
+      pageTitle: 'ملفات المرافقة',
+      pageSub: 'هنا ستجد قائمة بمرافقاتنا الجميلات في أنحاء الإمارات.',
+      cityLabel: 'المدينة',
+      ageLabel: 'العمر',
+      heightLabel: 'الطول (سم)',
+      weightLabel: 'الوزن (كغ)',
+      bustLabel: 'المقاس',
+      bustPlaceholder: 'B, C, D',
+      emptyTitle: 'لم يتم العثور على مرافقات',
+      emptyText: 'جرّب مدينة أخرى أو وسّع نطاق الفلاتر.'
     },
     about: {
       pageTitle: 'وكالتنا والقواعد',
@@ -366,11 +386,11 @@
       related: 'موديلات مشابهة'
     },
     dynamic: {
-      noModelsFound: 'لم يتم العثور على موديلات',
-      showingModels: 'عرض {{visible}} من أصل {{total}} موديل',
-      loadMoreModels: 'تحميل المزيد من الموديلات',
-      allModelsLoaded: 'تم تحميل كل الموديلات',
-      cityCount: '{{count}} موديل',
+      noModelsFound: 'لم يتم العثور على ملفات',
+      showingModels: 'عرض {{visible}} من أصل {{total}} ملف',
+      loadMoreModels: 'تحميل المزيد من الملفات',
+      allModelsLoaded: 'تم تحميل كل الملفات',
+      cityCount: '{{count}} ملف',
       messageButton: 'رسالة',
       viewProfile: 'عرض الملف',
       openProfileAria: 'فتح ملف {{name}}',
@@ -592,6 +612,40 @@
       apartments: 'Владелец апартаментов'
     }
   };
+
+  Object.assign(I18N.RU.titles, {
+    escort: 'Эскорт анкеты | EliteConnect'
+  });
+
+  Object.assign(I18N.RU.common, {
+    navEscort: 'Эскорт',
+    allCities: 'Все города',
+    min: 'Мин',
+    max: 'Макс',
+    reset: 'Сбросить',
+    apply: 'Применить'
+  });
+
+  Object.assign(I18N.RU.escort, {
+    pageTitle: 'Эскорт анкеты',
+    pageSub: 'Здесь вы найдете список наших красивых escort-анкет по ОАЭ.',
+    cityLabel: 'Город',
+    ageLabel: 'Возраст',
+    heightLabel: 'Рост (см)',
+    weightLabel: 'Вес (кг)',
+    bustLabel: 'Размер груди',
+    bustPlaceholder: 'B, C, D',
+    emptyTitle: 'Эскорт анкеты не найдены',
+    emptyText: 'Попробуйте другой город или расширьте фильтры.'
+  });
+
+  Object.assign(I18N.RU.dynamic, {
+    noModelsFound: 'Профили не найдены',
+    showingModels: 'Показано {{visible}} из {{total}} профилей',
+    loadMoreModels: 'Показать еще профили',
+    allModelsLoaded: 'Все профили загружены',
+    cityCount: '{{count}} профилей'
+  });
 
   const CITY_LABELS = {
     EN: { Dubai: 'Dubai', 'Abu Dhabi': 'Abu Dhabi', Sharjah: 'Sharjah', Ajman: 'Ajman', 'Ras Al Khaimah': 'Ras Al Khaimah', Fujairah: 'Fujairah' },
@@ -827,13 +881,23 @@
   }
 
   function applyEscortTranslations() {
-    setText('.page-hero__title', t('escort.pageTitle'));
-    setText('.page-hero__sub', t('escort.pageSub'));
-    localizeCitySelect(document.getElementById('escort-city-select'), t('common.selectCity'));
-    setText('#escort-age-select option[value=""]', t('common.anyAge'));
-    localizeCategorySelect(document.getElementById('escort-category-select'), t('common.anyCategory'));
-    setPlaceholder('#escort-query', t('escort.queryPlaceholder'));
-    setText('#escort-search-form .btn--search', t('common.search'));
+    setText('.escort-hero__title', t('escort.pageTitle'));
+    setText('.escort-hero__sub', t('escort.pageSub'));
+    setText('label[for="escort-city-select"]', t('escort.cityLabel'));
+    setText('label[for="escort-age-min"]', t('escort.ageLabel'));
+    setText('label[for="escort-height-min"]', t('escort.heightLabel'));
+    setText('label[for="escort-weight-min"]', t('escort.weightLabel'));
+    setText('label[for="escort-bust"]', t('escort.bustLabel'));
+    localizeCitySelect(document.getElementById('escort-city-select'), t('common.allCities'));
+    setPlaceholder('#escort-age-min', t('common.min'));
+    setPlaceholder('#escort-age-max', t('common.max'));
+    setPlaceholder('#escort-height-min', t('common.min'));
+    setPlaceholder('#escort-height-max', t('common.max'));
+    setPlaceholder('#escort-weight-min', t('common.min'));
+    setPlaceholder('#escort-weight-max', t('common.max'));
+    setPlaceholder('#escort-bust', t('escort.bustPlaceholder'));
+    setText('#escort-reset', t('common.reset'));
+    setText('#escort-search-form button[type="submit"]', t('common.apply'));
 
     const filterLabels = [t('common.all'), t('common.new'), t('badges.vip'), t('common.onlineNow'), t('common.verified')];
     Array.from(document.querySelectorAll('.filter-chip')).forEach((chip, index) => {

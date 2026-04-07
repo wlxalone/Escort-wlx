@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Escort Directory | EliteConnect</title>
+  <title>Escort Profiles | EliteConnect</title>
   <link rel="stylesheet" href="styles.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
 </head>
@@ -69,92 +69,117 @@
     </nav>
   </div>
 
-  <main>
-    <section class="page-hero">
-      <div class="container">
-        <h1 class="page-hero__title">Escort Directory</h1>
-        <p class="page-hero__sub">Filter by city, age, category and keywords. Every card opens a working profile page.</p>
-      </div>
-    </section>
+  <main class="escort-page">
+    <section class="escort-shell">
+      <div class="escort-shell__container">
+        <div class="escort-layout">
+          <aside class="escort-side escort-side--left" aria-hidden="true">
+            <img src="assets/images/escort-side-model.jpg" alt="" loading="lazy"/>
+          </aside>
 
-    <section class="filters-section">
-      <div class="container">
-        <form class="search-bar listing-search" id="escort-search-form">
-          <div class="search-bar__field">
-            <svg class="search-bar__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="currentColor"/></svg>
-            <select class="search-bar__select" id="escort-city-select">
-              <option value="">All cities</option>
-              <option value="Dubai">Dubai</option>
-              <option value="Abu Dhabi">Abu Dhabi</option>
-              <option value="Sharjah">Sharjah</option>
-              <option value="Ajman">Ajman</option>
-              <option value="Ras Al Khaimah">Ras Al Khaimah</option>
-              <option value="Fujairah">Fujairah</option>
-            </select>
-          </div>
-          <div class="search-bar__field">
-            <svg class="search-bar__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-            <select class="search-bar__select" id="escort-age-select">
-              <option value="">Any age</option>
-              <option value="18-22">18-22</option>
-              <option value="23-27">23-27</option>
-              <option value="28-32">28-32</option>
-              <option value="33+">33+</option>
-            </select>
-          </div>
-          <div class="search-bar__field">
-            <svg class="search-bar__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="currentColor"/></svg>
-            <select class="search-bar__select" id="escort-category-select">
-              <option value="">Any category</option>
-              <option value="vip">VIP</option>
-              <option value="new">New</option>
-              <option value="verified">Verified</option>
-              <option value="online">Online now</option>
-            </select>
-          </div>
-          <div class="search-bar__field">
-            <svg class="search-bar__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/></svg>
-            <input class="search-bar__select search-bar__input" id="escort-query" type="text" placeholder="Search name, city or tag"/>
-          </div>
-          <button class="btn btn--primary btn--search" type="submit">Search</button>
-        </form>
-      </div>
-    </section>
+          <div class="escort-main">
+            <section class="escort-hero">
+              <h1 class="escort-hero__title">Escort Profiles</h1>
+              <p class="escort-hero__sub">Here you will find the list of our beautiful escorts across the UAE.</p>
+            </section>
 
-    <section class="filters-section">
-      <div class="container">
-        <div class="filters-bar">
-          <div class="filters-bar__left">
-            <button class="filter-chip filter-chip--active" data-filter="all" type="button">All</button>
-            <button class="filter-chip" data-filter="new" type="button">New</button>
-            <button class="filter-chip" data-filter="vip" type="button">VIP</button>
-            <button class="filter-chip" data-filter="online" type="button">Online now</button>
-            <button class="filter-chip" data-filter="verified" type="button">Verified</button>
-          </div>
-          <div class="filters-bar__right">
-            <span class="results-count" id="results-count">Showing profiles</span>
-            <div class="view-toggle">
-              <button class="view-toggle__btn view-toggle__btn--active" id="grid-view" aria-label="Grid view" type="button">
-                <svg viewBox="0 0 20 20" fill="currentColor" width="16" aria-hidden="true"><rect x="2" y="2" width="7" height="7" rx="1"/><rect x="11" y="2" width="7" height="7" rx="1"/><rect x="2" y="11" width="7" height="7" rx="1"/><rect x="11" y="11" width="7" height="7" rx="1"/></svg>
-              </button>
-              <button class="view-toggle__btn" id="list-view" aria-label="List view" type="button">
-                <svg viewBox="0 0 20 20" fill="currentColor" width="16" aria-hidden="true"><rect x="2" y="4" width="16" height="2" rx="1"/><rect x="2" y="9" width="16" height="2" rx="1"/><rect x="2" y="14" width="16" height="2" rx="1"/></svg>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+            <section class="escort-controls">
+              <form class="escort-filter-panel" id="escort-search-form">
+                <div class="escort-filter-panel__grid">
+                  <div class="escort-filter-field">
+                    <label class="escort-filter-field__label" for="escort-city-select">City</label>
+                    <div class="escort-filter-field__control">
+                      <select class="escort-filter-field__input escort-filter-field__select" id="escort-city-select">
+                        <option value="">All Cities</option>
+                        <option value="Dubai">Dubai</option>
+                        <option value="Abu Dhabi">Abu Dhabi</option>
+                        <option value="Sharjah">Sharjah</option>
+                        <option value="Ajman">Ajman</option>
+                        <option value="Ras Al Khaimah">Ras Al Khaimah</option>
+                        <option value="Fujairah">Fujairah</option>
+                      </select>
+                      <svg class="escort-filter-field__caret" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                    </div>
+                  </div>
 
-    <section class="profiles-section">
-      <div class="container">
-        <div class="empty-state" id="escort-empty" hidden>
-          <h3 class="empty-state__title">No profiles found</h3>
-          <p class="empty-state__text">Try another city or clear some filters.</p>
-        </div>
-        <div class="profiles-grid" id="profiles-grid"></div>
-        <div class="load-more-wrap">
-          <button class="btn btn--outline btn--lg" id="load-more" type="button">Load More Profiles</button>
+                  <div class="escort-filter-field">
+                    <label class="escort-filter-field__label" for="escort-age-min">Age</label>
+                    <div class="escort-filter-range">
+                      <input class="escort-filter-field__input" id="escort-age-min" type="number" min="18" max="60" placeholder="Min"/>
+                      <span class="escort-filter-range__dash">-</span>
+                      <input class="escort-filter-field__input" id="escort-age-max" type="number" min="18" max="60" placeholder="Max"/>
+                    </div>
+                  </div>
+
+                  <div class="escort-filter-field">
+                    <label class="escort-filter-field__label" for="escort-height-min">Height (cm)</label>
+                    <div class="escort-filter-range">
+                      <input class="escort-filter-field__input" id="escort-height-min" type="number" min="140" max="210" placeholder="Min"/>
+                      <span class="escort-filter-range__dash">-</span>
+                      <input class="escort-filter-field__input" id="escort-height-max" type="number" min="140" max="210" placeholder="Max"/>
+                    </div>
+                  </div>
+
+                  <div class="escort-filter-field">
+                    <label class="escort-filter-field__label" for="escort-weight-min">Weight (kg)</label>
+                    <div class="escort-filter-range">
+                      <input class="escort-filter-field__input" id="escort-weight-min" type="number" min="40" max="100" placeholder="Min"/>
+                      <span class="escort-filter-range__dash">-</span>
+                      <input class="escort-filter-field__input" id="escort-weight-max" type="number" min="40" max="100" placeholder="Max"/>
+                    </div>
+                  </div>
+
+                  <div class="escort-filter-field">
+                    <label class="escort-filter-field__label" for="escort-bust">Bust Size</label>
+                    <input class="escort-filter-field__input" id="escort-bust" type="text" maxlength="9" placeholder="B, C, D"/>
+                  </div>
+
+                  <div class="escort-filter-actions">
+                    <button class="btn escort-filter-actions__btn escort-filter-actions__btn--ghost" id="escort-reset" type="reset">Reset</button>
+                    <button class="btn escort-filter-actions__btn escort-filter-actions__btn--primary" type="submit">Apply</button>
+                  </div>
+                </div>
+              </form>
+            </section>
+
+            <section class="filters-section escort-page__chips">
+              <div class="filters-bar">
+                <div class="filters-bar__left">
+                  <button class="filter-chip filter-chip--active" data-filter="all" type="button">All</button>
+                  <button class="filter-chip" data-filter="new" type="button">New</button>
+                  <button class="filter-chip" data-filter="vip" type="button">VIP</button>
+                  <button class="filter-chip" data-filter="online" type="button">Online now</button>
+                  <button class="filter-chip" data-filter="verified" type="button">Verified</button>
+                </div>
+                <div class="filters-bar__right">
+                  <span class="results-count" id="results-count">Showing profiles</span>
+                  <div class="view-toggle">
+                    <button class="view-toggle__btn view-toggle__btn--active" id="grid-view" aria-label="Grid view" type="button">
+                      <svg viewBox="0 0 20 20" fill="currentColor" width="16" aria-hidden="true"><rect x="2" y="2" width="7" height="7" rx="1"/><rect x="11" y="2" width="7" height="7" rx="1"/><rect x="2" y="11" width="7" height="7" rx="1"/><rect x="11" y="11" width="7" height="7" rx="1"/></svg>
+                    </button>
+                    <button class="view-toggle__btn" id="list-view" aria-label="List view" type="button">
+                      <svg viewBox="0 0 20 20" fill="currentColor" width="16" aria-hidden="true"><rect x="2" y="4" width="16" height="2" rx="1"/><rect x="2" y="9" width="16" height="2" rx="1"/><rect x="2" y="14" width="16" height="2" rx="1"/></svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="profiles-section escort-page__profiles">
+              <div class="empty-state" id="escort-empty" hidden>
+                <h3 class="empty-state__title">No escorts found</h3>
+                <p class="empty-state__text">Try another city or widen the filters.</p>
+              </div>
+              <div class="profiles-grid" id="profiles-grid"></div>
+              <div class="load-more-wrap">
+                <button class="btn btn--outline btn--lg" id="load-more" type="button">Load More Profiles</button>
+              </div>
+            </section>
+          </div>
+
+          <aside class="escort-side escort-side--right" aria-hidden="true">
+            <img src="assets/images/escort-side-model.jpg" alt="" loading="lazy"/>
+          </aside>
         </div>
       </div>
     </section>

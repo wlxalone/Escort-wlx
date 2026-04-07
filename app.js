@@ -133,6 +133,31 @@ function matchesAge(profile, range) {
   return profile.age >= minValue && profile.age <= maxValue;
 }
 
+function parseNumberFilter(value) {
+  if (value === null || value === undefined || value === '') return null;
+  const parsedValue = Number(value);
+  return Number.isFinite(parsedValue) ? parsedValue : null;
+}
+
+function matchesMinMax(value, minValue, maxValue) {
+  if (minValue !== null && value < minValue) return false;
+  if (maxValue !== null && value > maxValue) return false;
+  return true;
+}
+
+function matchesBust(profile, bustValue) {
+  const normalizedValue = String(bustValue || '').trim().toUpperCase();
+  if (!normalizedValue) return true;
+
+  const allowedSizes = normalizedValue
+    .split(',')
+    .map((size) => size.trim())
+    .filter(Boolean);
+
+  if (!allowedSizes.length) return true;
+  return allowedSizes.includes(String(profile.bust || '').trim().toUpperCase());
+}
+
 function matchesCategory(profile, category) {
   if (!category || category === 'all') return true;
   return profile.badges.includes(category);
@@ -140,12 +165,22 @@ function matchesCategory(profile, category) {
 
 function applyProfileFilters(state) {
   const query = (state.query || '').trim().toLowerCase();
+  const ageMin = parseNumberFilter(state.ageMin);
+  const ageMax = parseNumberFilter(state.ageMax);
+  const heightMin = parseNumberFilter(state.heightMin);
+  const heightMax = parseNumberFilter(state.heightMax);
+  const weightMin = parseNumberFilter(state.weightMin);
+  const weightMax = parseNumberFilter(state.weightMax);
 
   return getProfiles().filter((profile) => {
     if (state.city && profile.city !== state.city) return false;
     if (state.filter && state.filter !== 'all' && !profile.badges.includes(state.filter)) return false;
     if (state.category && !matchesCategory(profile, state.category)) return false;
     if (state.age && !matchesAge(profile, state.age)) return false;
+    if (!matchesMinMax(profile.age, ageMin, ageMax)) return false;
+    if (!matchesMinMax(profile.height, heightMin, heightMax)) return false;
+    if (!matchesMinMax(profile.weight, weightMin, weightMax)) return false;
+    if (!matchesBust(profile, state.bust)) return false;
     if (query && !getSearchText(profile).includes(query)) return false;
     return true;
   });
@@ -224,6 +259,13 @@ function syncListingUrl(state) {
   if (state.age) params.set('age', state.age);
   if (state.category) params.set('category', state.category);
   if (state.query) params.set('q', state.query);
+  if (state.ageMin) params.set('ageMin', state.ageMin);
+  if (state.ageMax) params.set('ageMax', state.ageMax);
+  if (state.heightMin) params.set('heightMin', state.heightMin);
+  if (state.heightMax) params.set('heightMax', state.heightMax);
+  if (state.weightMin) params.set('weightMin', state.weightMin);
+  if (state.weightMax) params.set('weightMax', state.weightMax);
+  if (state.bust) params.set('bust', state.bust);
 
   const url = `${window.location.pathname}${params.toString() ? `?${params.toString()}` : ''}`;
   window.history.replaceState({}, '', url);
@@ -251,6 +293,13 @@ function createListingController(config) {
     age: '',
     category: '',
     query: '',
+    ageMin: '',
+    ageMax: '',
+    heightMin: '',
+    heightMax: '',
+    weightMin: '',
+    weightMax: '',
+    bust: '',
     ...(config.initialState || {})
   };
 
@@ -472,22 +521,37 @@ function initEscortPage() {
   const params = new URLSearchParams(window.location.search);
   const form = $('#escort-search-form');
   const citySelect = $('#escort-city-select');
-  const ageSelect = $('#escort-age-select');
-  const categorySelect = $('#escort-category-select');
-  const queryInput = $('#escort-query');
+  const ageMinInput = $('#escort-age-min');
+  const ageMaxInput = $('#escort-age-max');
+  const heightMinInput = $('#escort-height-min');
+  const heightMaxInput = $('#escort-height-max');
+  const weightMinInput = $('#escort-weight-min');
+  const weightMaxInput = $('#escort-weight-max');
+  const bustInput = $('#escort-bust');
 
   const initialState = {
     city: params.get('city') || '',
     filter: params.get('filter') || 'all',
     age: params.get('age') || '',
     category: params.get('category') || '',
-    query: params.get('q') || ''
+    query: params.get('q') || '',
+    ageMin: params.get('ageMin') || '',
+    ageMax: params.get('ageMax') || '',
+    heightMin: params.get('heightMin') || '',
+    heightMax: params.get('heightMax') || '',
+    weightMin: params.get('weightMin') || '',
+    weightMax: params.get('weightMax') || '',
+    bust: params.get('bust') || ''
   };
 
   if (citySelect) citySelect.value = initialState.city;
-  if (ageSelect) ageSelect.value = initialState.age;
-  if (categorySelect) categorySelect.value = initialState.category;
-  if (queryInput) queryInput.value = initialState.query;
+  if (ageMinInput) ageMinInput.value = initialState.ageMin;
+  if (ageMaxInput) ageMaxInput.value = initialState.ageMax;
+  if (heightMinInput) heightMinInput.value = initialState.heightMin;
+  if (heightMaxInput) heightMaxInput.value = initialState.heightMax;
+  if (weightMinInput) weightMinInput.value = initialState.weightMin;
+  if (weightMaxInput) weightMaxInput.value = initialState.weightMax;
+  if (bustInput) bustInput.value = initialState.bust;
 
   const controller = createListingController({
     pageSize: 12,
@@ -503,10 +567,36 @@ function initEscortPage() {
     event.preventDefault();
     controller.setState({
       city: citySelect?.value || '',
-      age: ageSelect?.value || '',
-      category: categorySelect?.value || '',
-      query: queryInput?.value || ''
+      age: '',
+      category: '',
+      query: '',
+      ageMin: ageMinInput?.value || '',
+      ageMax: ageMaxInput?.value || '',
+      heightMin: heightMinInput?.value || '',
+      heightMax: heightMaxInput?.value || '',
+      weightMin: weightMinInput?.value || '',
+      weightMax: weightMaxInput?.value || '',
+      bust: bustInput?.value || ''
     });
+  });
+
+  form?.addEventListener('reset', () => {
+    window.setTimeout(() => {
+      controller.setState({
+        city: citySelect?.value || '',
+        filter: 'all',
+        age: '',
+        category: '',
+        query: '',
+        ageMin: ageMinInput?.value || '',
+        ageMax: ageMaxInput?.value || '',
+        heightMin: heightMinInput?.value || '',
+        heightMax: heightMaxInput?.value || '',
+        weightMin: weightMinInput?.value || '',
+        weightMax: weightMaxInput?.value || '',
+        bust: bustInput?.value || ''
+      });
+    }, 0);
   });
 
   controller.render();
@@ -705,7 +795,7 @@ function initSmoothScroll() {
 function initAnimations() {
   if (!window.IntersectionObserver) return;
 
-  const animatedElements = $$('.step-card, .city-card, .stat, .page-hero, .content-card, .apt-card, .contact-form, .profile-gallery, .profile-details, .about-page__hero-inner, .about-page__section-title, .about-page__panel, .about-feature');
+  const animatedElements = $$('.step-card, .city-card, .stat, .page-hero, .content-card, .apt-card, .contact-form, .profile-gallery, .profile-details, .about-page__hero-inner, .about-page__section-title, .about-page__panel, .about-feature, .escort-hero, .escort-filter-panel, .escort-side');
   if (!animatedElements.length) return;
 
   const observer = new IntersectionObserver((entries) => {
