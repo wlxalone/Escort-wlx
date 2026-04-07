@@ -188,6 +188,9 @@
         cityCount: '{{count}} profiles',
         messageButton: 'Message',
         viewProfile: 'View Profile',
+        moreDetails: 'More Details',
+        bookNow: 'Book',
+        yearsUnit: 'years',
         openProfileAria: 'Open {{name}} profile',
         saveModelAria: 'Save {{name}}',
         galleryImageAlt: 'Gallery image {{index}}',
@@ -393,6 +396,9 @@
       cityCount: '{{count}} ملف',
       messageButton: 'رسالة',
       viewProfile: 'عرض الملف',
+      moreDetails: 'المزيد',
+      bookNow: 'احجز',
+      yearsUnit: 'years',
       openProfileAria: 'فتح ملف {{name}}',
       saveModelAria: 'حفظ {{name}}',
       galleryImageAlt: 'صورة المعرض {{index}}',
@@ -644,7 +650,10 @@
     showingModels: 'Показано {{visible}} из {{total}} профилей',
     loadMoreModels: 'Показать еще профили',
     allModelsLoaded: 'Все профили загружены',
-    cityCount: '{{count}} профилей'
+    cityCount: '{{count}} профилей',
+    moreDetails: 'Подробнее',
+    bookNow: 'Book',
+    yearsUnit: 'years'
   });
 
   const CITY_LABELS = {

@@ -189,45 +189,77 @@ function applyProfileFilters(state) {
 function createProfileCard(profile) {
   const card = document.createElement('article');
   const isSaved = isFavorite(profile.id);
+  const isEscortPage = getPageName() === 'escort';
   const verifiedMark = profile.badges.includes('verified') ? '<span class="profile-card__check">&#10003;</span>' : '';
   const locationText = localizeLocation(profile.city, profile.district);
   const tags = (profile.tags || []).map((tag) => `<span class="profile-card__tag">${tag}</span>`).join('');
+  const galleryPreview = (profile.gallery?.slice(1, 5) || [])
+    .map((imageUrl, index) => `
+      <span class="profile-card__gallery-item profile-card__gallery-item--${index + 1}">
+        <img src="${imageUrl}" alt="" loading="lazy" aria-hidden="true"/>
+      </span>
+    `)
+    .join('');
+  const escortMeta = `${localizeCityName(profile.city)} ${profile.age} ${translateText('dynamic.yearsUnit', {}, 'years')} ${profile.height} cm`;
 
   card.className = 'profile-card';
   card.dataset.city = profile.city;
   card.dataset.id = String(profile.id);
 
-  card.innerHTML = `
-    <div class="profile-card__img-wrap">
-      <a href="profile.html?id=${profile.id}" class="profile-card__img-link" aria-label="${translateText('dynamic.openProfileAria', { name: profile.name }, `Open ${profile.name} profile`)}">
-        <img class="profile-card__img" src="${profile.photo}" alt="${profile.name}" loading="lazy"/>
-      </a>
-      <div class="profile-card__badges">${buildBadges(profile.badges)}</div>
-      <button class="profile-card__fav${isSaved ? ' active' : ''}" type="button">${isSaved ? '&#9829;' : '&#9825;'}</button>
-      <div class="profile-card__price-tag">${getPrimaryRate(profile)}</div>
-    </div>
-    <div class="profile-card__body">
-      <div class="profile-card__name-row">
-        <span class="profile-card__name">${profile.name}</span>
-        <span class="profile-card__age">, ${profile.age}</span>
-        ${verifiedMark}
+  if (isEscortPage) {
+    card.classList.add('profile-card--editorial');
+    card.innerHTML = `
+      <div class="profile-card__img-wrap">
+        <a href="profile.html?id=${profile.id}" class="profile-card__img-link" aria-label="${translateText('dynamic.openProfileAria', { name: profile.name }, `Open ${profile.name} profile`)}">
+          <img class="profile-card__img" src="${profile.photo}" alt="${profile.name}" loading="lazy"/>
+        </a>
+        <div class="profile-card__badges">${buildBadges(profile.badges)}</div>
+        <button class="profile-card__fav${isSaved ? ' active' : ''}" type="button">${isSaved ? '&#9829;' : '&#9825;'}</button>
+        <div class="profile-card__gallery-stack">${galleryPreview}</div>
+        <div class="profile-card__editorial">
+          <h3 class="profile-card__editorial-name">${profile.name}</h3>
+          <p class="profile-card__editorial-line">${escortMeta}</p>
+          <div class="profile-card__editorial-price">${getPrimaryRate(profile)}</div>
+          <div class="profile-card__editorial-actions">
+            <a href="profile.html?id=${profile.id}" class="profile-card__editorial-btn profile-card__editorial-btn--ghost">${translateText('dynamic.moreDetails', {}, 'More Details')}</a>
+            <a href="contact.html?profile=${profile.id}" class="profile-card__editorial-btn profile-card__editorial-btn--primary">${translateText('dynamic.bookNow', {}, 'Book')}</a>
+          </div>
+        </div>
       </div>
-      <div class="profile-card__location">
-        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M8 1.5A4.5 4.5 0 0 1 12.5 6c0 3.5-4.5 8-4.5 8S3.5 9.5 3.5 6A4.5 4.5 0 0 1 8 1.5z" stroke="currentColor" stroke-width="1.2"/>
-          <circle cx="8" cy="6" r="1.5" stroke="currentColor" stroke-width="1.2"/>
-        </svg>
-        ${locationText}
+    `;
+  } else {
+    card.innerHTML = `
+      <div class="profile-card__img-wrap">
+        <a href="profile.html?id=${profile.id}" class="profile-card__img-link" aria-label="${translateText('dynamic.openProfileAria', { name: profile.name }, `Open ${profile.name} profile`)}">
+          <img class="profile-card__img" src="${profile.photo}" alt="${profile.name}" loading="lazy"/>
+        </a>
+        <div class="profile-card__badges">${buildBadges(profile.badges)}</div>
+        <button class="profile-card__fav${isSaved ? ' active' : ''}" type="button">${isSaved ? '&#9829;' : '&#9825;'}</button>
+        <div class="profile-card__price-tag">${getPrimaryRate(profile)}</div>
       </div>
-      <div class="profile-card__tags">
-        ${tags}
+      <div class="profile-card__body">
+        <div class="profile-card__name-row">
+          <span class="profile-card__name">${profile.name}</span>
+          <span class="profile-card__age">, ${profile.age}</span>
+          ${verifiedMark}
+        </div>
+        <div class="profile-card__location">
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M8 1.5A4.5 4.5 0 0 1 12.5 6c0 3.5-4.5 8-4.5 8S3.5 9.5 3.5 6A4.5 4.5 0 0 1 8 1.5z" stroke="currentColor" stroke-width="1.2"/>
+            <circle cx="8" cy="6" r="1.5" stroke="currentColor" stroke-width="1.2"/>
+          </svg>
+          ${locationText}
+        </div>
+        <div class="profile-card__tags">
+          ${tags}
+        </div>
+        <div class="profile-card__footer">
+          <a href="contact.html?profile=${profile.id}" class="profile-card__btn">${translateText('dynamic.messageButton', {}, 'Message')}</a>
+          <a href="profile.html?id=${profile.id}" class="profile-card__btn profile-card__btn--primary">${translateText('dynamic.viewProfile', {}, 'View Profile')}</a>
+        </div>
       </div>
-      <div class="profile-card__footer">
-        <a href="contact.html?profile=${profile.id}" class="profile-card__btn">${translateText('dynamic.messageButton', {}, 'Message')}</a>
-        <a href="profile.html?id=${profile.id}" class="profile-card__btn profile-card__btn--primary">${translateText('dynamic.viewProfile', {}, 'View Profile')}</a>
-      </div>
-    </div>
-  `;
+    `;
+  }
 
   const favoriteButton = $('.profile-card__fav', card);
   setFavoriteButtonLabel(favoriteButton, profile.name);

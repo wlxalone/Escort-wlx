@@ -1183,6 +1183,194 @@ body[data-page="escort"] .footer {
   min-height: 36px;
 }
 
+.escort-page .profile-card--editorial {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  cursor: default;
+}
+
+.escort-page .profile-card--editorial:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: transparent;
+}
+
+.escort-page .profile-card--editorial .profile-card__img-wrap {
+  aspect-ratio: 0.67;
+  min-height: 410px;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow:
+    0 22px 48px rgba(0,0,0,.4),
+    inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+.escort-page .profile-card--editorial .profile-card__img-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(10,8,14,.06) 0%, rgba(10,8,14,.24) 32%, rgba(10,8,14,.78) 100%),
+    linear-gradient(90deg, rgba(0,0,0,.18) 0%, transparent 30%, transparent 70%, rgba(0,0,0,.12) 100%);
+  pointer-events: none;
+}
+
+.escort-page .profile-card--editorial .profile-card__img {
+  object-position: center top;
+}
+
+.escort-page .profile-card--editorial .profile-card__badges,
+.escort-page .profile-card--editorial .profile-card__fav,
+.escort-page .profile-card--editorial .profile-card__gallery-stack,
+.escort-page .profile-card--editorial .profile-card__editorial {
+  z-index: 2;
+}
+
+.escort-page .profile-card--editorial .profile-card__badges {
+  top: 12px;
+  left: 12px;
+}
+
+.escort-page .profile-card--editorial .badge {
+  font-size: 11px;
+  padding: 5px 10px;
+}
+
+.escort-page .profile-card--editorial .profile-card__fav {
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  background: rgba(10,10,14,.42);
+  border: 1px solid rgba(255,255,255,.08);
+  backdrop-filter: blur(10px);
+}
+
+.profile-card__gallery-stack {
+  position: absolute;
+  top: 64px;
+  right: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.profile-card__gallery-item {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid rgba(247,37,133,.72);
+  background: rgba(18,18,24,.85);
+  box-shadow:
+    0 10px 18px rgba(0,0,0,.28),
+    0 0 0 3px rgba(255,255,255,.08);
+}
+
+.profile-card__gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-card__editorial {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0 18px 18px;
+}
+
+.profile-card__editorial-name {
+  font-size: clamp(28px, 2.4vw, 42px);
+  font-weight: 800;
+  line-height: .95;
+  letter-spacing: -.04em;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.profile-card__editorial-line {
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(255,255,255,.78);
+  margin-bottom: 8px;
+}
+
+.profile-card__editorial-price {
+  margin-bottom: 18px;
+  font-size: 15px;
+  font-weight: 800;
+  color: #ff4fa7;
+  text-shadow: 0 0 18px rgba(247,37,133,.18);
+}
+
+.profile-card__editorial-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.profile-card__editorial-btn {
+  min-height: 72px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.25;
+  padding: 12px 16px;
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+.profile-card__editorial-btn:hover {
+  transform: translateY(-1px);
+}
+
+.profile-card__editorial-btn--ghost {
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.2);
+  background: rgba(255,255,255,.12);
+  backdrop-filter: blur(14px);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+}
+
+.profile-card__editorial-btn--ghost:hover {
+  color: #fff;
+  background: rgba(255,255,255,.18);
+}
+
+.profile-card__editorial-btn--primary {
+  color: #fff;
+  background: linear-gradient(180deg, #ef2cad 0%, #b920ca 100%);
+  box-shadow: 0 18px 30px rgba(247,37,133,.24);
+}
+
+.profile-card__editorial-btn--primary:hover {
+  color: #fff;
+  background: linear-gradient(180deg, #ff41b7 0%, #cb2de1 100%);
+}
+
+.escort-page .profile-card--editorial .profile-card__body,
+.escort-page .profile-card--editorial .profile-card__price-tag {
+  display: none;
+}
+
+.escort-page .profiles-grid.list-mode .profile-card--editorial {
+  display: block;
+  max-height: none;
+}
+
+.escort-page .profiles-grid.list-mode .profile-card--editorial .profile-card__img-wrap {
+  width: 100%;
+  aspect-ratio: 0.67;
+}
+
 .contact-form { background: var(--bg-3); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 48px; max-width: 640px; margin: 0 auto; }
 .contact-form__title { font-size: 28px; font-weight: 800; margin-bottom: 8px; }
 .contact-form__sub { font-size: 14px; color: var(--text-2); margin-bottom: 32px; }
@@ -1264,6 +1452,8 @@ body[data-page="escort"] .footer {
   .escort-filter-panel__grid { grid-template-columns: 1fr 1fr; }
   .escort-filter-actions { grid-column: 1 / -1; }
   .escort-page .profiles-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .profile-card__editorial-name { font-size: 24px; }
+  .profile-card__gallery-stack { top: 60px; }
   .about-page { padding: 24px 0 80px; }
   .about-page__hero { padding: 10px 0 32px; }
   .about-page__panel { padding: 14px 18px; }
@@ -1295,6 +1485,27 @@ body[data-page="escort"] .footer {
   .escort-filter-actions { grid-column: auto; flex-direction: column; }
   .escort-filter-actions__btn { width: 100%; }
   .escort-page .profiles-grid { grid-template-columns: 1fr; }
+  .escort-page .profile-card--editorial .profile-card__img-wrap { min-height: 420px; }
+  .profile-card__gallery-stack {
+    top: 66px;
+    right: 14px;
+    gap: 8px;
+  }
+  .profile-card__gallery-item {
+    width: 50px;
+    height: 50px;
+  }
+  .profile-card__editorial {
+    padding: 0 16px 16px;
+  }
+  .profile-card__editorial-name { font-size: 22px; }
+  .profile-card__editorial-line { font-size: 13px; }
+  .profile-card__editorial-price { font-size: 14px; margin-bottom: 14px; }
+  .profile-card__editorial-actions { gap: 10px; }
+  .profile-card__editorial-btn {
+    min-height: 66px;
+    font-size: 15px;
+  }
   .about-page__title { font-size: clamp(34px, 12vw, 48px); }
   .about-page__lead { margin-top: 16px; font-size: 15px; }
   .about-page__section-title { margin-bottom: 22px; }
