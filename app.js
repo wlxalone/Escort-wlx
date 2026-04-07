@@ -563,10 +563,41 @@ function initEscortPage() {
 
   if (!controller) return;
 
-  form?.addEventListener('submit', (event) => {
-    event.preventDefault();
-    controller.setState({
+  const liveFields = [citySelect, ageMinInput, ageMaxInput, heightMinInput, heightMaxInput, weightMinInput, weightMaxInput, bustInput];
+  let liveFilterTimer = 0;
+
+  const normalizeRangeInputs = (minInput, maxInput) => {
+    const minValue = parseNumberFilter(minInput?.value);
+    const maxValue = parseNumberFilter(maxInput?.value);
+
+    if (minValue === null || maxValue === null || minValue <= maxValue) return;
+    if (minInput) minInput.value = String(maxValue);
+    if (maxInput) maxInput.value = String(minValue);
+  };
+
+  const normalizeBustInput = () => {
+    if (!bustInput) return '';
+
+    const normalizedBust = String(bustInput.value || '')
+      .toUpperCase()
+      .replace(/;/g, ',')
+      .split(',')
+      .map((size) => size.trim())
+      .filter(Boolean)
+      .join(', ');
+
+    bustInput.value = normalizedBust;
+    return normalizedBust;
+  };
+
+  const buildEscortFilterState = (overrides = {}) => {
+    normalizeRangeInputs(ageMinInput, ageMaxInput);
+    normalizeRangeInputs(heightMinInput, heightMaxInput);
+    normalizeRangeInputs(weightMinInput, weightMaxInput);
+
+    return {
       city: citySelect?.value || '',
+      filter: controller.state.filter || 'all',
       age: '',
       category: '',
       query: '',
@@ -576,27 +607,39 @@ function initEscortPage() {
       heightMax: heightMaxInput?.value || '',
       weightMin: weightMinInput?.value || '',
       weightMax: weightMaxInput?.value || '',
-      bust: bustInput?.value || ''
-    });
+      bust: normalizeBustInput(),
+      ...overrides
+    };
+  };
+
+  const applyEscortFilters = (resetVisible = true, overrides = {}) => {
+    controller.setState(buildEscortFilterState(overrides), resetVisible);
+  };
+
+  form?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    applyEscortFilters(true);
   });
 
   form?.addEventListener('reset', () => {
     window.setTimeout(() => {
-      controller.setState({
-        city: citySelect?.value || '',
-        filter: 'all',
-        age: '',
-        category: '',
-        query: '',
-        ageMin: ageMinInput?.value || '',
-        ageMax: ageMaxInput?.value || '',
-        heightMin: heightMinInput?.value || '',
-        heightMax: heightMaxInput?.value || '',
-        weightMin: weightMinInput?.value || '',
-        weightMax: weightMaxInput?.value || '',
-        bust: bustInput?.value || ''
-      });
+      applyEscortFilters(true, { filter: 'all' });
     }, 0);
+  });
+
+  liveFields.forEach((field) => {
+    if (!field) return;
+
+    const scheduleApply = () => {
+      window.clearTimeout(liveFilterTimer);
+      liveFilterTimer = window.setTimeout(() => applyEscortFilters(true), 140);
+    };
+
+    field.addEventListener('change', scheduleApply);
+
+    if (field !== citySelect) {
+      field.addEventListener('input', scheduleApply);
+    }
   });
 
   controller.render();
