@@ -955,7 +955,7 @@ body[data-page="escort"]::after {
     linear-gradient(180deg, rgba(10,8,14,.08), rgba(10,8,14,.74)),
     linear-gradient(90deg, rgba(247,37,133,.26), transparent 16%, transparent 84%, rgba(247,37,133,.26)),
     linear-gradient(90deg, transparent calc(50% - 1px), rgba(255,255,255,.18) 50%, transparent calc(50% + 1px)),
-    url('assets/images/escort-side-model.jpg') center / cover no-repeat;
+    url('assets/images/escort-side-model.jpg') center 24% / 160% auto no-repeat;
   box-shadow:
     inset 0 0 80px rgba(0,0,0,.68),
     0 0 0 1px rgba(247,37,133,.16);
@@ -964,13 +964,13 @@ body[data-page="escort"]::after {
 
 body[data-page="escort"]::before {
   left: clamp(20px, 5vw, 70px);
-  background-position: center center;
+  background-position: center 24%;
 }
 
 body[data-page="escort"]::after {
   right: clamp(20px, 5vw, 70px);
   transform: scaleX(-1);
-  background-position: center center;
+  background-position: center 24%;
 }
 
 body[data-page="escort"] .header,
