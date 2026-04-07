@@ -91,20 +91,17 @@
         emptyText: 'Try another city or clear some filters.'
       },
       about: {
-        pageTitle: 'About EliteConnect',
-        pageSub: 'A premium directory demo designed to feel polished, private and easy to navigate.',
-        card1Title: 'Clear user flow',
-        card1Text: 'From homepage search to model and contact form, every primary action already works on the current front-end stack.',
-        card2Title: 'Shared data model',
-        card2Text: 'Models, apartments and badges are stored once and reused everywhere so the site can scale without duplicated content.',
-        card3Title: 'Reusable UI',
-        card3Text: 'Cards, filters, forms and page blocks all use the same design system so new pages stay visually consistent.',
-        card4Title: 'Ready for backend',
-        card4Text: 'This version is static, but the structure is already set up for future API, admin panel, auth and payment integration.',
-        ctaTitle: 'Need the next stage?',
-        ctaText: 'The next logical step is replacing demo data with a real database, admin moderation and secure account flows.',
-        ctaPrimary: 'Discuss Implementation',
-        ctaSecondary: 'Open Catalog'
+        pageTitle: 'Our Agency & Rules',
+        pageSub: 'We specialize in providing exclusive companionship services with the most beautiful, educated and charming models. Your comfort, privacy, and satisfaction are our highest priorities.',
+        reasonsTitle: 'Why Choose Us?',
+        feature1Title: 'Absolute Discretion',
+        feature1Text: 'Your privacy is our top priority. All interactions and personal information are handled with the utmost confidentiality.',
+        feature2Title: 'Verified Profiles',
+        feature2Text: 'All photos are 100% real and regularly updated. What you see is what you get, ensuring a genuine experience.',
+        feature3Title: 'Professional Approach',
+        feature3Text: 'We work only with reliable and responsible models who are not only beautiful but also intelligent and personable.',
+        feature4Title: 'Flexible Conditions',
+        feature4Text: 'Whether it\'s a meeting in your apartment, a hotel, or companionship for travel, we cater to your specific needs.'
       },
       apartmentsPage: {
         pageTitle: 'Private Apartments',
@@ -289,20 +286,17 @@
       emptyText: 'جرّب مدينة أخرى أو أزل بعض الفلاتر.'
     },
     about: {
-      pageTitle: 'حول EliteConnect',
-      pageSub: 'عرض تجريبي فاخر لدليل خاص مصمم ليبدو أنيقًا وسهل الاستخدام.',
-      card1Title: 'مسار استخدام واضح',
-      card1Text: 'من بحث الصفحة الرئيسية إلى صفحة الموديل ونموذج التواصل، كل إجراء أساسي يعمل بالفعل على الواجهة الحالية.',
-      card2Title: 'نموذج بيانات موحد',
-      card2Text: 'يتم تخزين الموديلات والشقق والبادجات مرة واحدة وإعادة استخدامها في كل مكان، مما يسمح بتوسيع الموقع بدون تكرار.',
-      card3Title: 'واجهة قابلة لإعادة الاستخدام',
-      card3Text: 'تعتمد البطاقات والفلاتر والنماذج وكتل الصفحات على نفس نظام التصميم للحفاظ على الاتساق البصري.',
-      card4Title: 'جاهز للباك إند',
-      card4Text: 'هذه النسخة ثابتة حاليًا، لكن البنية جاهزة لربط API ولوحة إدارة وتوثيق ودفع لاحقًا.',
-      ctaTitle: 'هل تحتاج إلى المرحلة التالية؟',
-      ctaText: 'الخطوة التالية المنطقية هي استبدال البيانات التجريبية بقاعدة بيانات حقيقية مع الإشراف وتدفقات حسابات آمنة.',
-      ctaPrimary: 'ناقش التنفيذ',
-      ctaSecondary: 'افتح الكتالوج'
+      pageTitle: 'وكالتنا والقواعد',
+      pageSub: 'نحن متخصصون في تقديم خدمات مرافقة حصرية مع أجمل الموديلات وأكثرهن أناقة وثقافة. راحتك وخصوصيتك ورضاك هي أولويتنا القصوى.',
+      reasonsTitle: 'لماذا تختارنا؟',
+      feature1Title: 'سرية تامة',
+      feature1Text: 'خصوصيتك هي أولويتنا الأولى. يتم التعامل مع جميع التفاعلات والبيانات الشخصية بأعلى درجات السرية.',
+      feature2Title: 'ملفات موثقة',
+      feature2Text: 'جميع الصور حقيقية 100% ويتم تحديثها باستمرار. ما تراه هو ما ستحصل عليه، لتجربة موثوقة وواضحة.',
+      feature3Title: 'أسلوب احترافي',
+      feature3Text: 'نعمل فقط مع موديلات موثوقات ومسؤولات يتمتعن بالجمال والذكاء وحسن التعامل.',
+      feature4Title: 'شروط مرنة',
+      feature4Text: 'سواء كان اللقاء في شقتك أو في فندق أو مرافقة أثناء السفر، فنحن نلبي احتياجاتك الخاصة.'
     },
     apartmentsPage: {
       pageTitle: 'شقق خاصة',
@@ -486,20 +480,17 @@
       emptyText: 'Попробуйте другой город или уберите часть фильтров.'
     },
     about: {
-      pageTitle: 'О EliteConnect',
-      pageSub: 'Премиальный демо-каталог для взрослой аудитории с аккуратным дизайном, приватной подачей и простой навигацией.',
-      card1Title: 'Понятный путь пользователя',
-      card1Text: 'От поиска на главной до профиля модели и формы контакта - все основные действия уже работают на текущем фронтенде.',
-      card2Title: 'Единая модель данных',
-      card2Text: 'Модели, апартаменты и бейджи хранятся один раз и переиспользуются по всему сайту без дублирования.',
-      card3Title: 'Переиспользуемый UI',
-      card3Text: 'Карточки, фильтры, формы и блоки страниц используют одну дизайн-систему, поэтому новые страницы остаются визуально цельными.',
-      card4Title: 'Готово к backend',
-      card4Text: 'Версия пока статическая, но структура уже подготовлена для API, админки, авторизации и платежей.',
-      ctaTitle: 'Нужен следующий этап?',
-      ctaText: 'Следующий логичный шаг - заменить демо-данные реальной базой данных, модерацией и безопасными потоками аккаунтов.',
-      ctaPrimary: 'Обсудить реализацию',
-      ctaSecondary: 'Открыть каталог'
+      pageTitle: 'Наше агентство и правила',
+      pageSub: 'Мы специализируемся на предоставлении эксклюзивных companionship-услуг с самыми красивыми, образованными и обаятельными моделями. Ваш комфорт, приватность и удовлетворенность для нас в приоритете.',
+      reasonsTitle: 'Почему выбирают нас?',
+      feature1Title: 'Полная конфиденциальность',
+      feature1Text: 'Ваша приватность для нас на первом месте. Все общение и личные данные обрабатываются с максимальной осторожностью и полной конфиденциальностью.',
+      feature2Title: 'Проверенные анкеты',
+      feature2Text: 'Все фотографии на 100% реальные и регулярно обновляются. Вы видите именно то, что получите, без неприятных сюрпризов.',
+      feature3Title: 'Профессиональный подход',
+      feature3Text: 'Мы работаем только с надежными и ответственными моделями, которые сочетают красоту, интеллект и приятное общение.',
+      feature4Title: 'Гибкие условия',
+      feature4Text: 'Встреча в апартаментах, в отеле или сопровождение в поездке - мы подстраиваемся под ваши пожелания и формат.'
     },
     apartmentsPage: {
       pageTitle: 'Приватные апартаменты',
@@ -854,22 +845,17 @@
   }
 
   function applyAboutTranslations() {
-    setText('.page-hero__title', t('about.pageTitle'));
-    setText('.page-hero__sub', t('about.pageSub'));
+    setText('.about-page__title', t('about.pageTitle'));
+    setText('.about-page__lead', t('about.pageSub'));
+    setText('.about-page__section-title', t('about.reasonsTitle'));
 
-    const cards = Array.from(document.querySelectorAll('.content-card'));
-    const titles = [t('about.card1Title'), t('about.card2Title'), t('about.card3Title'), t('about.card4Title')];
-    const texts = [t('about.card1Text'), t('about.card2Text'), t('about.card3Text'), t('about.card4Text')];
-    cards.forEach((card, index) => {
-      setText(card.querySelector('.content-card__title'), titles[index]);
-      setText(card.querySelector('.content-card__text'), texts[index]);
+    const features = Array.from(document.querySelectorAll('.about-feature'));
+    const titles = [t('about.feature1Title'), t('about.feature2Title'), t('about.feature3Title'), t('about.feature4Title')];
+    const texts = [t('about.feature1Text'), t('about.feature2Text'), t('about.feature3Text'), t('about.feature4Text')];
+    features.forEach((feature, index) => {
+      setText(feature.querySelector('.about-feature__title'), titles[index]);
+      setText(feature.querySelector('.about-feature__text'), texts[index]);
     });
-
-    setText('.cta-banner__title', t('about.ctaTitle'));
-    setText('.cta-banner__text', t('about.ctaText'));
-    const buttons = Array.from(document.querySelectorAll('.cta-banner__actions a'));
-    if (buttons[0]) buttons[0].textContent = t('about.ctaPrimary');
-    if (buttons[1]) buttons[1].textContent = t('about.ctaSecondary');
   }
 
   function applyApartmentsTranslations() {

@@ -705,7 +705,7 @@ function initSmoothScroll() {
 function initAnimations() {
   if (!window.IntersectionObserver) return;
 
-  const animatedElements = $$('.step-card, .city-card, .stat, .content-card, .apt-card, .contact-form, .profile-gallery, .profile-details');
+  const animatedElements = $$('.step-card, .city-card, .stat, .page-hero, .content-card, .apt-card, .contact-form, .profile-gallery, .profile-details, .about-page__hero-inner, .about-page__section-title, .about-page__panel, .about-feature');
   if (!animatedElements.length) return;
 
   const observer = new IntersectionObserver((entries) => {
@@ -730,7 +730,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initViewToggle();
   initForms();
   initSmoothScroll();
-  initAnimations();
 
   switch (getPageName()) {
     case 'home':
@@ -750,4 +749,5 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   window.applyTranslations?.();
+  initAnimations();
 });
