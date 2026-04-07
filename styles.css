@@ -835,9 +835,9 @@ main { animation-delay: .08s; }
 }
 
 .about-page__title {
-  font-size: clamp(54px, 7vw, 86px);
+  font-size: clamp(42px, 5.8vw, 68px);
   font-weight: 800;
-  line-height: .96;
+  line-height: 1;
   letter-spacing: -.06em;
   color: #fff;
   text-wrap: balance;
@@ -845,9 +845,9 @@ main { animation-delay: .08s; }
 
 .about-page__lead {
   max-width: 930px;
-  margin: 24px auto 0;
-  font-size: clamp(18px, 2vw, 21px);
-  line-height: 1.6;
+  margin: 18px auto 0;
+  font-size: clamp(16px, 1.5vw, 18px);
+  line-height: 1.7;
   color: rgba(255,255,255,.84);
   text-wrap: balance;
 }
@@ -859,7 +859,7 @@ main { animation-delay: .08s; }
 .about-page__section-title {
   margin-bottom: 30px;
   text-align: center;
-  font-size: clamp(36px, 5vw, 56px);
+  font-size: clamp(28px, 4vw, 44px);
   font-weight: 800;
   line-height: 1.05;
   letter-spacing: -.04em;
@@ -921,7 +921,7 @@ main { animation-delay: .08s; }
 
 .about-feature__title {
   margin-bottom: 8px;
-  font-size: clamp(24px, 2.4vw, 31px);
+  font-size: clamp(18px, 2vw, 24px);
   font-weight: 700;
   line-height: 1.15;
   letter-spacing: -.03em;
@@ -929,8 +929,8 @@ main { animation-delay: .08s; }
 }
 
 .about-feature__text {
-  font-size: 17px;
-  line-height: 1.7;
+  font-size: 15px;
+  line-height: 1.75;
   color: rgba(255,255,255,.68);
   max-width: 760px;
 }
@@ -1013,7 +1013,7 @@ main { animation-delay: .08s; }
   .about-page__hero { padding: 10px 0 32px; }
   .about-page__panel { padding: 14px 18px; }
   .about-feature { grid-template-columns: 1fr; gap: 14px; padding: 22px 2px; }
-  .about-feature__text { font-size: 16px; }
+  .about-feature__text { font-size: 15px; }
 }
 @media (max-width: 600px) {
   .profiles-grid { grid-template-columns: 1fr; }
@@ -1030,12 +1030,12 @@ main { animation-delay: .08s; }
   .profile-rates { grid-template-columns: 1fr 1fr 1fr; }
   .contact-form { padding: 28px 20px; }
   .apartments-grid { grid-template-columns: 1fr; }
-  .about-page__title { font-size: clamp(42px, 15vw, 60px); }
-  .about-page__lead { margin-top: 18px; font-size: 16px; }
+  .about-page__title { font-size: clamp(34px, 12vw, 48px); }
+  .about-page__lead { margin-top: 16px; font-size: 15px; }
   .about-page__section-title { margin-bottom: 22px; }
   .about-page__panel { padding: 12px 14px; border-radius: 16px; }
   .about-feature__icon { width: 44px; height: 44px; }
-  .about-feature__title { font-size: 22px; }
+  .about-feature__title { font-size: 20px; }
   .about-feature__text { font-size: 15px; }
 }
 @media (max-width: 420px) {
