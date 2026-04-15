@@ -643,12 +643,38 @@
 
               </div>
               <div class="form-group" style="margin-top:20px">
-                <label class="form-label">Языки (через запятую)</label>
-                <input class="form-input" id="f-languages" placeholder="English, Russian"/>
+                <label class="form-label">Языки</label>
+                <div class="checkboxes">
+                  <label class="checkbox-label"><input type="checkbox" name="language" value="English"/> English</label>
+                  <label class="checkbox-label"><input type="checkbox" name="language" value="Russian"/> Русский</label>
+                  <label class="checkbox-label"><input type="checkbox" name="language" value="Arabic"/> Arabic</label>
+                  <label class="checkbox-label"><input type="checkbox" name="language" value="French"/> French</label>
+                  <label class="checkbox-label"><input type="checkbox" name="language" value="German"/> German</label>
+                  <label class="checkbox-label"><input type="checkbox" name="language" value="Spanish"/> Spanish</label>
+                  <label class="checkbox-label"><input type="checkbox" name="language" value="Italian"/> Italian</label>
+                  <label class="checkbox-label"><input type="checkbox" name="language" value="Turkish"/> Turkish</label>
+                  <label class="checkbox-label"><input type="checkbox" name="language" value="Ukrainian"/> Ukrainian</label>
+                </div>
               </div>
               <div class="form-group">
-                <label class="form-label">Теги (через запятую)</label>
-                <input class="form-input" id="f-tags" placeholder="Blonde, Slim, VIP"/>
+                <label class="form-label">Теги</label>
+                <div class="checkboxes">
+                  <label class="checkbox-label"><input type="checkbox" name="tag" value="Blonde"/> Blonde</label>
+                  <label class="checkbox-label"><input type="checkbox" name="tag" value="Brunette"/> Brunette</label>
+                  <label class="checkbox-label"><input type="checkbox" name="tag" value="Redhead"/> Redhead</label>
+                  <label class="checkbox-label"><input type="checkbox" name="tag" value="Slim"/> Slim</label>
+                  <label class="checkbox-label"><input type="checkbox" name="tag" value="Athletic"/> Athletic</label>
+                  <label class="checkbox-label"><input type="checkbox" name="tag" value="Curvy"/> Curvy</label>
+                  <label class="checkbox-label"><input type="checkbox" name="tag" value="Tall"/> Tall</label>
+                  <label class="checkbox-label"><input type="checkbox" name="tag" value="Petite"/> Petite</label>
+                  <label class="checkbox-label"><input type="checkbox" name="tag" value="Young"/> Young</label>
+                  <label class="checkbox-label"><input type="checkbox" name="tag" value="Mature"/> Mature</label>
+                  <label class="checkbox-label"><input type="checkbox" name="tag" value="VIP"/> VIP</label>
+                  <label class="checkbox-label"><input type="checkbox" name="tag" value="Elite"/> Elite</label>
+                  <label class="checkbox-label"><input type="checkbox" name="tag" value="GFE"/> GFE</label>
+                  <label class="checkbox-label"><input type="checkbox" name="tag" value="Outcall"/> Outcall</label>
+                  <label class="checkbox-label"><input type="checkbox" name="tag" value="Incall"/> Incall</label>
+                </div>
               </div>
             </div>
 
@@ -1077,8 +1103,12 @@ function editProfile(id) {
   document.querySelectorAll('[name="service"]').forEach(cb => {
     cb.checked = (p.services || []).includes(cb.value);
   });
-  document.getElementById('f-languages').value    = (p.languages || []).join(', ');
-  document.getElementById('f-tags').value         = (p.tags || []).join(', ');
+  document.querySelectorAll('[name="language"]').forEach(cb => {
+    cb.checked = (p.languages || []).includes(cb.value);
+  });
+  document.querySelectorAll('[name="tag"]').forEach(cb => {
+    cb.checked = (p.tags || []).includes(cb.value);
+  });
   // Main photo
   document.getElementById('f-photo').value = p.photo || '';
   if (p.photo) {
@@ -1121,6 +1151,8 @@ function resetForm() {
   // Reset services
   document.querySelectorAll('[name="service"]').forEach(cb => cb.checked = false);
   document.querySelectorAll('[name="body-art"]').forEach(cb => cb.checked = false);
+  document.querySelectorAll('[name="language"]').forEach(cb => cb.checked = false);
+  document.querySelectorAll('[name="tag"]').forEach(cb => cb.checked = false);
   // Reset gallery
   galleryItems = [];
   renderGallery();
@@ -1171,8 +1203,8 @@ async function submitProfileForm(e) {
     nationality:     document.getElementById('f-nationality').value,
     bodyArt,
     services,
-    languages:       document.getElementById('f-languages').value.trim(),
-    tags:            document.getElementById('f-tags').value.trim(),
+    languages:       [...document.querySelectorAll('[name="language"]:checked')].map(cb => cb.value),
+    tags:            [...document.querySelectorAll('[name="tag"]:checked')].map(cb => cb.value),
     photo:           document.getElementById('f-photo').value.trim(),
     gallery,
     rates,
