@@ -724,9 +724,9 @@
     const toUsd = { USD: 1, AED: 1 / 3.67, RUB: 1 / 92, PLN: 1 / 4.05 };
     const usdAmount = amount * (toUsd[srcCurrency] || 1);
 
-    // Target currency per language
+    // Target currency per language (site is UAE-based → EN defaults to AED)
     const targets = {
-      EN: { rate: 1,    symbol: '$',    before: true  },
+      EN: { rate: 3.67, symbol: 'AED', before: false },
       AR: { rate: 3.67, symbol: 'د.إ', before: false },
       RU: { rate: 92,   symbol: '₽',   before: false }
     };
