@@ -506,6 +506,13 @@ function initViewToggle() {
 
 function updateCityCounts() {
   const profiles = window.EC_PROFILES || [];
+  const total = profiles.length;
+
+  // Обновляем счётчик активных анкет в stats-bar
+  const activeEl = document.getElementById('stat-active-models');
+  if (activeEl) activeEl.textContent = total > 0 ? total : activeEl.textContent;
+
+  // Считаем по городам
   const counts = {};
   profiles.forEach(p => {
     if (p.city) counts[p.city] = (counts[p.city] || 0) + 1;
