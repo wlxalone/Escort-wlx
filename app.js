@@ -803,7 +803,9 @@ function initProfilePage() {
 
   const messageLink = $('#message-now');
   if (messageLink) {
-    messageLink.href = `contact.html?profile=${profile.id}`;
+    messageLink.href = getTelegramLink(profile);
+    messageLink.target = '_blank';
+    messageLink.rel = 'noopener';
   }
 
   if (relatedGrid) {
