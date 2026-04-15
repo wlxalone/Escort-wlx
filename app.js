@@ -135,6 +135,21 @@ function buildBadges(badges = []) {
     .join('');
 }
 
+function getTelegramLink(profile) {
+  if (profile.telegram) {
+    const handle = String(profile.telegram).replace(/^@/, '');
+    return `https://t.me/${handle}`;
+  }
+  if (profile.whatsapp) {
+    const num = String(profile.whatsapp).replace(/[^\d+]/g, '');
+    return `https://wa.me/${num}`;
+  }
+  if (profile.phone || profile.phone2) {
+    return `tel:${profile.phone || profile.phone2}`;
+  }
+  return '#';
+}
+
 function getPrimaryRate(profile) {
   return localizePriceText(profile.priceFrom || profile.rates?.[0]?.price || translateText('dynamic.onRequest', {}, 'On request'));
 }
@@ -249,7 +264,7 @@ function createProfileCard(profile) {
         </div>
         <div class="profile-card__editorial-actions">
           <a href="profile.html?id=${profile.id}" class="profile-card__editorial-btn profile-card__editorial-btn--ghost">${translateText('dynamic.moreDetails', {}, 'More Details')}</a>
-          <a href="contact.html?profile=${profile.id}" class="profile-card__editorial-btn profile-card__editorial-btn--primary">${translateText('dynamic.bookNow', {}, 'Book')}</a>
+          <a href="${getTelegramLink(profile)}" target="_blank" rel="noopener" class="profile-card__editorial-btn profile-card__editorial-btn--primary">Telegram</a>
         </div>
       </div>
     </div>
