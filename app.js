@@ -517,7 +517,7 @@ function updateCityCounts() {
     const city = decodeURIComponent(match[1]);
     const count = counts[city] || 0;
     const el = card.querySelector('.city-card__count');
-    if (el && count > 0) {
+    if (el) {
       el.textContent = window.t ? window.t('dynamic.cityCount', { count }) : `${count} profiles`;
     }
   });

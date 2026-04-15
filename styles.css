@@ -599,11 +599,11 @@ main { animation-delay: .08s; }
 .city-card__img { width: 100%; height: 100%; transition: transform .4s ease; background-size: cover; background-position: center; }
 .city-card:hover .city-card__img { transform: scale(1.06); }
 .city-card__img--dubai    { background-image: url('https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=800&q=75'); background-color: #0f3460; }
-.city-card__img--abudhabi { background-image: url('https://images.unsplash.com/photo-1580918417888-5d9a0b0c13d6?w=800&q=75'); background-color: #3d2020; }
-.city-card__img--sharjah  { background-image: url('https://images.unsplash.com/photo-1577717903315-1691ae25ab3f?w=800&q=75'); background-color: #103354; }
-.city-card__img--ajman    { background-image: url('https://images.unsplash.com/photo-1606819717115-9159c900370b?w=800&q=75'); background-color: #1e3b1e; }
-.city-card__img--rak      { background-image: url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=75'); background-color: #3a2040; }
-.city-card__img--fujairah { background-image: url('https://images.unsplash.com/photo-1609137144813-7d9921338f24?w=800&q=75'); background-color: #3e3520; }
+.city-card__img--abudhabi { background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Abu_dhabi_skylines_2014.jpg/960px-Abu_dhabi_skylines_2014.jpg'); background-color: #1a2a3a; }
+.city-card__img--sharjah  { background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Al_Qasba.jpg/960px-Al_Qasba.jpg'); background-color: #103354; }
+.city-card__img--ajman    { background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Palacio_del_Emir_de_Ajm%C3%A1n.jpg/960px-Palacio_del_Emir_de_Ajm%C3%A1n.jpg'); background-color: #1e3020; }
+.city-card__img--rak      { background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/View_of_Ras_Al_Khaimah_City_from_Julphar_Towers.jpg/960px-View_of_Ras_Al_Khaimah_City_from_Julphar_Towers.jpg'); background-color: #1a2030; }
+.city-card__img--fujairah { background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Hills_in_Fujairah_2012_01.jpg/960px-Hills_in_Fujairah_2012_01.jpg'); background-color: #2a2010; }
 .city-card__overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,.85)); padding: 32px 18px 18px; display: flex; flex-direction: column; }
 .city-card__name { font-size: 18px; font-weight: 700; color: #fff; }
 .city-card__count { font-size: 13px; color: var(--accent-3); margin-top: 2px; }
