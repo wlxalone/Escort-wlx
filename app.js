@@ -504,7 +504,28 @@ function initViewToggle() {
   });
 }
 
+function updateCityCounts() {
+  const profiles = window.EC_PROFILES || [];
+  const counts = {};
+  profiles.forEach(p => {
+    if (p.city) counts[p.city] = (counts[p.city] || 0) + 1;
+  });
+  document.querySelectorAll('.city-card').forEach(card => {
+    const href = card.getAttribute('href') || '';
+    const match = href.match(/city=([^&]+)/);
+    if (!match) return;
+    const city = decodeURIComponent(match[1]);
+    const count = counts[city] || 0;
+    const el = card.querySelector('.city-card__count');
+    if (el && count > 0) {
+      el.textContent = window.t ? window.t('dynamic.cityCount', { count }) : `${count} profiles`;
+    }
+  });
+}
+
 function initHomePage() {
+  updateCityCounts();
+
   const controller = createListingController({
     pageSize: 8,
     filterChipSelector: '.filter-chip'
