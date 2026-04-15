@@ -154,6 +154,32 @@
     .gallery-item input { flex: 1; }
     .gallery-item .remove-gallery { background: none; border: none; color: var(--red); cursor: pointer; font-size: 18px; line-height: 1; padding: 4px; }
 
+    /* ── Upload ── */
+    .upload-zone {
+      border: 2px dashed var(--border); border-radius: 10px;
+      padding: 18px; text-align: center; cursor: pointer;
+      transition: border-color .2s, background .2s; position: relative;
+    }
+    .upload-zone:hover, .upload-zone.drag { border-color: var(--pink); background: rgba(247,37,133,.04); }
+    .upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .upload-zone__icon { font-size: 28px; margin-bottom: 6px; }
+    .upload-zone__text { font-size: 13px; color: var(--muted); }
+    .upload-zone__text strong { color: var(--pink); }
+    .upload-progress {
+      height: 4px; background: var(--border); border-radius: 2px; margin-top: 10px; overflow: hidden; display: none;
+    }
+    .upload-progress__bar { height: 100%; background: var(--pink); width: 0; transition: width .3s; }
+    .photo-preview-wrap { margin-top: 10px; display: none; position: relative; display: inline-block; }
+    .photo-preview-wrap img { height: 100px; border-radius: 8px; object-fit: cover; display: block; }
+    .photo-preview-wrap .remove-preview {
+      position: absolute; top: -6px; right: -6px;
+      background: var(--red); color: #fff; border: none; border-radius: 50%;
+      width: 20px; height: 20px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+    .gallery-item .upload-btn { flex-shrink: 0; white-space: nowrap; }
+    .gallery-item .gallery-preview { width: 40px; height: 40px; border-radius: 6px; object-fit: cover; display: none; flex-shrink: 0; }
+    .uploading-badge { font-size: 11px; color: var(--pink); margin-left: 6px; }
+
     .checkboxes { display: flex; flex-wrap: wrap; gap: 8px; }
     .checkbox-label {
       display: flex; align-items: center; gap: 6px;
@@ -350,12 +376,24 @@
             <div class="form-card form-full">
               <h3>Фото</h3>
               <div class="form-group">
-                <label class="form-label">Главное фото (URL)</label>
-                <input class="form-input" id="f-photo" placeholder="https://..."/>
-                <div class="form-hint">Прямая ссылка на изображение</div>
+                <label class="form-label">Главное фото</label>
+                <div class="upload-zone" id="main-photo-zone">
+                  <input type="file" id="f-photo-file" accept="image/*" onchange="handleMainPhotoFile(this)"/>
+                  <div class="upload-zone__icon">🖼</div>
+                  <div class="upload-zone__text">Перетащи файл или <strong>нажми для выбора</strong></div>
+                  <div class="upload-zone__text" style="margin-top:4px;font-size:11px">JPG, PNG, WEBP · макс. 5 MB</div>
+                </div>
+                <div class="upload-progress" id="main-photo-progress"><div class="upload-progress__bar" id="main-photo-bar"></div></div>
+                <div id="main-photo-preview-wrap" style="display:none;margin-top:10px">
+                  <div style="position:relative;display:inline-block">
+                    <img id="main-photo-preview" style="height:100px;border-radius:8px;object-fit:cover"/>
+                    <button type="button" class="remove-preview" onclick="removeMainPhoto()" style="position:absolute;top:-6px;right:-6px;background:var(--red);color:#fff;border:none;border-radius:50%;width:20px;height:20px;font-size:12px;cursor:pointer">✕</button>
+                  </div>
+                </div>
+                <input type="hidden" id="f-photo"/>
               </div>
               <div class="form-group">
-                <label class="form-label">Галерея (URL, по одному)</label>
+                <label class="form-label">Галерея</label>
                 <div class="gallery-list" id="gallery-list"></div>
                 <button type="button" class="btn btn--ghost btn--sm" style="margin-top:8px" onclick="addGalleryRow()">+ Добавить фото</button>
               </div>
@@ -599,15 +637,109 @@ document.getElementById('confirm-ok').addEventListener('click', async () => {
   }
 });
 
-// ── Form: gallery rows ───────────────────────────────────────────────────────
+// ── Upload to Supabase Storage ────────────────────────────────────────────────
+const BUCKET = 'profiles';
+
+// Отдельный клиент с service_role только для upload в Storage (только в admin)
+const _SURL = 'https://ksnljmqvfopqhfykocof.supabase.co';
+const _SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzbmxqbXF2Zm9wcWhmeWtvY29mIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NjI0Mzc0OSwiZXhwIjoyMDkxODE5NzQ5fQ.CijKkU_DWI10zb3Pj56pIOi_YXsTvvgN6B6W3nOFUQU';
+const storageClient = window.supabase.createClient(_SURL, _SKEY);
+
+async function uploadToStorage(file, folder) {
+  const ext  = file.name.split('.').pop();
+  const name = `${folder}/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
+  const { data, error } = await storageClient.storage
+    .from(BUCKET)
+    .upload(name, file, { upsert: true, contentType: file.type });
+  if (error) throw error;
+  const { data: urlData } = storageClient.storage.from(BUCKET).getPublicUrl(name);
+  return urlData.publicUrl;
+}
+
+// ── Main photo upload ─────────────────────────────────────────────────────────
+async function handleMainPhotoFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) { toast('Файл больше 5 MB', true); return; }
+
+  const progress = document.getElementById('main-photo-progress');
+  const bar      = document.getElementById('main-photo-bar');
+  progress.style.display = 'block';
+  bar.style.width = '40%';
+
+  try {
+    const folder = (document.getElementById('f-name').value.trim() || 'profile').toLowerCase().replace(/\s+/g, '_');
+    const url = await uploadToStorage(file, folder);
+    bar.style.width = '100%';
+    document.getElementById('f-photo').value = url;
+
+    const preview = document.getElementById('main-photo-preview');
+    preview.src = url;
+    document.getElementById('main-photo-preview-wrap').style.display = 'block';
+    document.getElementById('main-photo-zone').style.display = 'none';
+    setTimeout(() => { progress.style.display = 'none'; bar.style.width = '0'; }, 500);
+    toast('Фото загружено ✓');
+  } catch (e) {
+    toast('Ошибка загрузки: ' + e.message, true);
+    progress.style.display = 'none';
+    bar.style.width = '0';
+  }
+}
+
+function removeMainPhoto() {
+  document.getElementById('f-photo').value = '';
+  document.getElementById('main-photo-preview-wrap').style.display = 'none';
+  document.getElementById('main-photo-zone').style.display = 'block';
+  document.getElementById('f-photo-file').value = '';
+}
+
+// ── Form: gallery rows ────────────────────────────────────────────────────────
 function addGalleryRow(val = '') {
   const list = document.getElementById('gallery-list');
-  const row = document.createElement('div');
+  const idx  = Date.now() + Math.random();
+  const row  = document.createElement('div');
   row.className = 'gallery-item';
+  row.style.alignItems = 'center';
   row.innerHTML = `
+    <img class="gallery-preview" id="gprev_${idx}" src="${esc(val)}" style="${val ? 'display:inline-block' : 'display:none'};width:40px;height:40px;border-radius:6px;object-fit:cover;flex-shrink:0"/>
     <input class="form-input gallery-url" placeholder="https://..." value="${esc(val)}"/>
+    <label class="btn btn--ghost btn--sm upload-btn" style="cursor:pointer;white-space:nowrap">
+      &#128247; Файл
+      <input type="file" accept="image/*" style="display:none" onchange="handleGalleryFile(this, 'gprev_${idx}')"/>
+    </label>
     <button type="button" class="remove-gallery" onclick="this.parentElement.remove()">&#215;</button>`;
   list.appendChild(row);
+  if (val) {
+    const img = row.querySelector('.gallery-preview');
+    img.onerror = () => { img.style.display = 'none'; };
+  }
+}
+
+async function handleGalleryFile(input, previewId) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) { toast('Файл больше 5 MB', true); return; }
+
+  const row = input.closest('.gallery-item');
+  const urlInput = row.querySelector('.gallery-url');
+  urlInput.placeholder = 'Загружаю...';
+  urlInput.disabled = true;
+
+  try {
+    const folder = (document.getElementById('f-name').value.trim() || 'gallery').toLowerCase().replace(/\s+/g, '_');
+    const url = await uploadToStorage(file, folder);
+    urlInput.value = url;
+    urlInput.disabled = false;
+    urlInput.placeholder = 'https://...';
+
+    const prev = document.getElementById(previewId);
+    if (prev) { prev.src = url; prev.style.display = 'inline-block'; }
+    toast('Фото загружено ✓');
+  } catch (e) {
+    toast('Ошибка загрузки: ' + e.message, true);
+    urlInput.disabled = false;
+    urlInput.placeholder = 'https://...';
+  }
 }
 
 // ── Form: rate rows ───────────────────────────────────────────────────────────
@@ -645,7 +777,16 @@ function editProfile(id) {
   document.getElementById('f-services').value     = (p.services || []).join(', ');
   document.getElementById('f-languages').value    = (p.languages || []).join(', ');
   document.getElementById('f-tags').value         = (p.tags || []).join(', ');
-  document.getElementById('f-photo').value        = p.photo || '';
+  // Main photo
+  document.getElementById('f-photo').value = p.photo || '';
+  if (p.photo) {
+    document.getElementById('main-photo-preview').src = p.photo;
+    document.getElementById('main-photo-preview-wrap').style.display = 'block';
+    document.getElementById('main-photo-zone').style.display = 'none';
+  } else {
+    document.getElementById('main-photo-preview-wrap').style.display = 'none';
+    document.getElementById('main-photo-zone').style.display = 'block';
+  }
   document.getElementById('f-color').value        = p.color || '#f72585';
 
   // badges
@@ -671,6 +812,12 @@ function resetForm() {
   document.getElementById('form-title').textContent = 'Новая анкета';
   document.getElementById('gallery-list').innerHTML = '';
   document.getElementById('rates-list').innerHTML = '';
+  // Reset photo upload
+  document.getElementById('f-photo').value = '';
+  document.getElementById('f-photo-file').value = '';
+  document.getElementById('main-photo-preview-wrap').style.display = 'none';
+  document.getElementById('main-photo-zone').style.display = 'block';
+  document.getElementById('main-photo-progress').style.display = 'none';
   addGalleryRow();
   addRateRow(); addRateRow(); addRateRow();
 }
