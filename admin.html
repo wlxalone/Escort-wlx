@@ -224,6 +224,23 @@
     }
     .checkbox-label input { accent-color: var(--pink); }
 
+    /* ── Services checkboxes ── */
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+    .services-category__title {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .07em; color: var(--pink); margin-bottom: 10px;
+    }
+    .services-category__list { display: flex; flex-direction: column; gap: 6px; }
+    .service-check {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; cursor: pointer; user-select: none; color: var(--text);
+    }
+    .service-check input[type="checkbox"] {
+      width: 16px; height: 16px; accent-color: var(--pink);
+      cursor: pointer; flex-shrink: 0;
+    }
+    .service-check:hover { color: var(--pink); }
+
     /* ── Toast ── */
     #toast {
       position: fixed; bottom: 24px; right: 24px;
@@ -437,13 +454,93 @@
             </div>
 
             <!-- Услуги и языки -->
-            <div class="form-card">
-              <h3>Услуги</h3>
-              <div class="form-group">
-                <label class="form-label">Список услуг (через запятую)</label>
-                <textarea class="form-textarea" id="f-services" rows="3" placeholder="Dinner dates, Travel companion, Massage"></textarea>
+            <div class="form-card form-full">
+              <h3>Предпочтения</h3>
+              <div class="services-grid" id="services-grid">
+
+                <div class="services-category">
+                  <div class="services-category__title">Секс</div>
+                  <div class="services-category__list">
+                    <label class="service-check"><input type="checkbox" name="service" value="Секс классический"/> Секс классический</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Секс анальный"/> Секс анальный</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Секс групповой"/> Секс групповой</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Секс лесбийский"/> Секс лесбийский</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Семейной паре"/> Семейной паре</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Минет в резинке"/> Минет в резинке</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Минет без резинки"/> Минет без резинки</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Минет глубокий"/> Минет глубокий</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Минет горловой"/> Минет горловой</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Минет в машине"/> Минет в машине</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Куннилингус"/> Куннилингус</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Целуюсь"/> Целуюсь</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Игрушки"/> Игрушки</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Окончание на грудь"/> Окончание на грудь</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Окончание на лицо"/> Окончание на лицо</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Окончание в рот"/> Окончание в рот</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Поза 69"/> Поза 69</label>
+                  </div>
+                </div>
+
+                <div class="services-category">
+                  <div class="services-category__title">Массаж</div>
+                  <div class="services-category__list">
+                    <label class="service-check"><input type="checkbox" name="service" value="Массаж классический"/> Массаж классический</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Массаж профессиональный"/> Массаж профессиональный</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Массаж расслабляющий"/> Массаж расслабляющий</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Массаж урологический"/> Массаж урологический</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Массаж эротический"/> Массаж эротический</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Массаж семейной паре"/> Массаж семейной паре</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Массажный стол"/> Массажный стол</label>
+                  </div>
+                </div>
+
+                <div class="services-category">
+                  <div class="services-category__title">Стриптиз</div>
+                  <div class="services-category__list">
+                    <label class="service-check"><input type="checkbox" name="service" value="Стриптиз профи"/> Стриптиз профи</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Стриптиз не профи"/> Стриптиз не профи</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Лесби откровенное"/> Лесби откровенное</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Лесби-шоу легкое"/> Лесби-шоу легкое</label>
+                  </div>
+                </div>
+
+                <div class="services-category">
+                  <div class="services-category__title">Экстрим</div>
+                  <div class="services-category__list">
+                    <label class="service-check"><input type="checkbox" name="service" value="Страпон"/> Страпон</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Анилингус клиенту"/> Анилингус клиенту</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Анилингус мне"/> Анилингус мне</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Золотой дождь клиенту"/> Золотой дождь клиенту</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Золотой дождь мне"/> Золотой дождь мне</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Фистинг анальный клиенту"/> Фистинг анальный клиенту</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Фистинг анальный мне"/> Фистинг анальный мне</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Фистинг классический"/> Фистинг классический</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Фингеринг"/> Фингеринг</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Двойное проникновение"/> Двойное проникновение</label>
+                  </div>
+                </div>
+
+                <div class="services-category">
+                  <div class="services-category__title">Садо-мазо</div>
+                  <div class="services-category__list">
+                    <label class="service-check"><input type="checkbox" name="service" value="Госпожа"/> Госпожа</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Доминирование"/> Доминирование</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Рабыня"/> Рабыня</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Подчинение"/> Подчинение</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Бондаж"/> Бондаж</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Порка"/> Порка</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Фетиш"/> Фетиш</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Трамплинг"/> Трамплинг</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Шибари"/> Шибари</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Фейсситтинг"/> Фейсситтинг</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Копро (выдача)"/> Копро (выдача)</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Копро (прием)"/> Копро (прием)</label>
+                    <label class="service-check"><input type="checkbox" name="service" value="Сквирт"/> Сквирт</label>
+                  </div>
+                </div>
+
               </div>
-              <div class="form-group">
+              <div class="form-group" style="margin-top:20px">
                 <label class="form-label">Языки (через запятую)</label>
                 <input class="form-input" id="f-languages" placeholder="English, Russian"/>
               </div>
@@ -861,7 +958,10 @@ function editProfile(id) {
   document.getElementById('f-phone').value        = p.phone || '';
   document.getElementById('f-about').value        = p.aboutMe || '';
   document.getElementById('f-availability').value = p.availability || '';
-  document.getElementById('f-services').value     = (p.services || []).join(', ');
+  // services checkboxes
+  document.querySelectorAll('[name="service"]').forEach(cb => {
+    cb.checked = (p.services || []).includes(cb.value);
+  });
   document.getElementById('f-languages').value    = (p.languages || []).join(', ');
   document.getElementById('f-tags').value         = (p.tags || []).join(', ');
   // Main photo
@@ -903,6 +1003,8 @@ function resetForm() {
   document.getElementById('main-photo-preview-wrap').style.display = 'none';
   document.getElementById('main-photo-zone').style.display = 'block';
   document.getElementById('main-photo-progress').style.display = 'none';
+  // Reset services
+  document.querySelectorAll('[name="service"]').forEach(cb => cb.checked = false);
   // Reset gallery
   galleryItems = [];
   renderGallery();
@@ -925,6 +1027,8 @@ async function submitProfileForm(e) {
 
   const gallery = galleryItems.map(i => i.url).filter(Boolean);
 
+  const services = [...document.querySelectorAll('[name="service"]:checked')].map(cb => cb.value);
+
   const profile = {
     name:         document.getElementById('f-name').value.trim(),
     city:         document.getElementById('f-city').value,
@@ -937,7 +1041,7 @@ async function submitProfileForm(e) {
     phone:        document.getElementById('f-phone').value.trim(),
     aboutMe:      document.getElementById('f-about').value.trim(),
     availability: document.getElementById('f-availability').value.trim(),
-    services:     document.getElementById('f-services').value.trim(),
+    services,
     languages:    document.getElementById('f-languages').value.trim(),
     tags:         document.getElementById('f-tags').value.trim(),
     photo:        document.getElementById('f-photo').value.trim(),
