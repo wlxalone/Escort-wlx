@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin — EliteConnect</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0d0d;
+      --surface: #161616;
+      --surface2: #1f1f1f;
+      --border: #2a2a2a;
+      --pink: #f72585;
+      --pink-dim: #c01e6a;
+      --text: #e8e8e8;
+      --muted: #888;
+      --green: #22c55e;
+      --red: #ef4444;
+      --yellow: #f59e0b;
+    }
+
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* ── Login ── */
+    #login-screen {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh;
+    }
+    .login-box {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 40px; width: 360px;
+    }
+    .login-box h1 { font-size: 22px; margin-bottom: 6px; }
+    .login-box p { color: var(--muted); font-size: 13px; margin-bottom: 28px; }
+    .login-box input {
+      width: 100%; padding: 12px 14px; background: var(--surface2);
+      border: 1px solid var(--border); border-radius: 8px; color: var(--text);
+      font-size: 14px; margin-bottom: 14px; outline: none;
+    }
+    .login-box input:focus { border-color: var(--pink); }
+    .login-error { color: var(--red); font-size: 13px; margin-bottom: 10px; display: none; }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 10px 18px; border-radius: 8px; font-size: 13px;
+      font-weight: 600; cursor: pointer; border: none; transition: opacity .15s;
+    }
+    .btn:hover { opacity: .85; }
+    .btn--primary { background: var(--pink); color: #fff; }
+    .btn--ghost { background: transparent; border: 1px solid var(--border); color: var(--text); }
+    .btn--danger { background: var(--red); color: #fff; }
+    .btn--success { background: var(--green); color: #fff; }
+    .btn--sm { padding: 6px 12px; font-size: 12px; }
+    .btn--full { width: 100%; justify-content: center; }
+
+    /* ── Layout ── */
+    #admin-screen { display: none; }
+    .admin-header {
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      padding: 14px 28px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .admin-header__logo { font-size: 18px; font-weight: 700; }
+    .admin-header__logo span { color: var(--pink); }
+    .admin-header__right { display: flex; align-items: center; gap: 12px; }
+
+    .admin-body { display: flex; min-height: calc(100vh - 57px); }
+
+    .sidebar {
+      width: 220px; background: var(--surface); border-right: 1px solid var(--border);
+      padding: 20px 0; flex-shrink: 0;
+    }
+    .sidebar__item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 11px 20px; font-size: 13px; font-weight: 500;
+      cursor: pointer; color: var(--muted); transition: all .15s; border: none;
+      background: transparent; width: 100%; text-align: left;
+    }
+    .sidebar__item:hover { color: var(--text); background: var(--surface2); }
+    .sidebar__item.active { color: var(--pink); background: rgba(247,37,133,.07); }
+
+    .main-content { flex: 1; padding: 28px; overflow-y: auto; }
+
+    /* ── Panels ── */
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    .panel-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 24px;
+    }
+    .panel-header h2 { font-size: 20px; font-weight: 700; }
+
+    /* ── Stats ── */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+    .stat-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 20px;
+    }
+    .stat-card__label { font-size: 12px; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: .05em; }
+    .stat-card__value { font-size: 28px; font-weight: 700; color: var(--pink); }
+
+    /* ── Table ── */
+    .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { background: var(--surface2); padding: 12px 16px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; }
+    td { padding: 14px 16px; border-top: 1px solid var(--border); vertical-align: middle; }
+    tr:hover td { background: rgba(255,255,255,.02); }
+
+    .badge {
+      display: inline-block; padding: 2px 8px; border-radius: 20px;
+      font-size: 11px; font-weight: 600; text-transform: uppercase;
+    }
+    .badge--active { background: rgba(34,197,94,.15); color: var(--green); }
+    .badge--hidden { background: rgba(239,68,68,.12); color: var(--red); }
+    .badge--vip    { background: rgba(247,37,133,.15); color: var(--pink); }
+    .badge--new    { background: rgba(245,158,11,.15); color: var(--yellow); }
+    .badge--verified { background: rgba(99,102,241,.15); color: #818cf8; }
+
+    .profile-thumb { width: 40px; height: 40px; border-radius: 8px; object-fit: cover; background: var(--surface2); }
+
+    .actions { display: flex; gap: 6px; }
+
+    /* ── Form ── */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .form-grid--3 { grid-template-columns: 1fr 1fr 1fr; }
+    .form-full { grid-column: 1 / -1; }
+    .form-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 24px;
+    }
+    .form-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+    .form-group { margin-bottom: 16px; }
+    .form-label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
+    .form-input, .form-select, .form-textarea {
+      width: 100%; padding: 10px 12px; background: var(--surface2);
+      border: 1px solid var(--border); border-radius: 8px; color: var(--text);
+      font-size: 13px; font-family: inherit; outline: none; transition: border-color .15s;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--pink); }
+    .form-select { appearance: none; cursor: pointer; }
+    .form-textarea { resize: vertical; min-height: 80px; }
+    .form-hint { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+    .rates-row { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
+    .rates-row input { flex: 1; }
+    .rates-row .remove-rate { background: none; border: none; color: var(--red); cursor: pointer; font-size: 18px; line-height: 1; padding: 4px; }
+
+    .gallery-list { display: flex; flex-direction: column; gap: 8px; }
+    .gallery-item { display: flex; gap: 8px; align-items: center; }
+    .gallery-item input { flex: 1; }
+    .gallery-item .remove-gallery { background: none; border: none; color: var(--red); cursor: pointer; font-size: 18px; line-height: 1; padding: 4px; }
+
+    .checkboxes { display: flex; flex-wrap: wrap; gap: 8px; }
+    .checkbox-label {
+      display: flex; align-items: center; gap: 6px;
+      padding: 6px 12px; background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 20px; font-size: 12px; cursor: pointer; user-select: none;
+    }
+    .checkbox-label input { accent-color: var(--pink); }
+
+    /* ── Toast ── */
+    #toast {
+      position: fixed; bottom: 24px; right: 24px;
+      background: var(--green); color: #fff;
+      padding: 12px 20px; border-radius: 10px; font-size: 13px; font-weight: 600;
+      opacity: 0; pointer-events: none; transition: opacity .3s; z-index: 9999;
+    }
+    #toast.error { background: var(--red); }
+    #toast.show { opacity: 1; }
+
+    /* ── Loading ── */
+    .loading { color: var(--muted); font-size: 14px; padding: 40px; text-align: center; }
+    .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--pink); border-radius: 50%; animation: spin .7s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Modal ── */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0,0,0,.75);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 1000; display: none;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 28px; width: 420px;
+    }
+    .modal h3 { font-size: 18px; margin-bottom: 10px; }
+    .modal p { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
+    .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+  </style>
+</head>
+<body>
+
+<!-- ── Login ─────────────────────────────────────────────── -->
+<div id="login-screen">
+  <div class="login-box">
+    <h1>&#9679; EliteConnect</h1>
+    <p>Admin Panel — введи пароль для входа</p>
+    <div class="login-error" id="login-error">Неверный пароль</div>
+    <input type="password" id="login-password" placeholder="Пароль" autocomplete="current-password"/>
+    <button class="btn btn--primary btn--full" onclick="doLogin()">Войти</button>
+  </div>
+</div>
+
+<!-- ── Admin ─────────────────────────────────────────────── -->
+<div id="admin-screen">
+
+  <header class="admin-header">
+    <div class="admin-header__logo"><span>Elite</span>Connect · Admin</div>
+    <div class="admin-header__right">
+      <a href="index.html" target="_blank" class="btn btn--ghost btn--sm">&#8599; Открыть сайт</a>
+      <button class="btn btn--ghost btn--sm" onclick="doLogout()">Выйти</button>
+    </div>
+  </header>
+
+  <div class="admin-body">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <button class="sidebar__item active" data-panel="dashboard" onclick="switchPanel(this)">
+        &#9632; Дашборд
+      </button>
+      <button class="sidebar__item" data-panel="profiles" onclick="switchPanel(this)">
+        &#9829; Анкеты
+      </button>
+      <button class="sidebar__item" data-panel="add" onclick="switchPanel(this)">
+        &#43; Добавить анкету
+      </button>
+    </aside>
+
+    <!-- Content -->
+    <main class="main-content">
+
+      <!-- Dashboard -->
+      <div class="panel active" id="panel-dashboard">
+        <div class="panel-header"><h2>Дашборд</h2></div>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-card__label">Всего анкет</div>
+            <div class="stat-card__value" id="stat-total">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card__label">Активных</div>
+            <div class="stat-card__value" id="stat-active">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card__label">VIP</div>
+            <div class="stat-card__value" id="stat-vip">—</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card__label">Скрытых</div>
+            <div class="stat-card__value" id="stat-hidden">—</div>
+          </div>
+        </div>
+        <div class="table-wrap" id="recent-table-wrap">
+          <div class="loading"><span class="spinner"></span></div>
+        </div>
+      </div>
+
+      <!-- Profiles list -->
+      <div class="panel" id="panel-profiles">
+        <div class="panel-header">
+          <h2>Все анкеты</h2>
+          <button class="btn btn--primary btn--sm" onclick="switchPanelById('add')">+ Добавить</button>
+        </div>
+        <div class="table-wrap" id="profiles-table-wrap">
+          <div class="loading"><span class="spinner"></span></div>
+        </div>
+      </div>
+
+      <!-- Add / Edit form -->
+      <div class="panel" id="panel-add">
+        <div class="panel-header">
+          <h2 id="form-title">Новая анкета</h2>
+          <button class="btn btn--ghost btn--sm" onclick="resetForm()">&#x21BA; Сбросить</button>
+        </div>
+
+        <form id="profile-form" onsubmit="submitProfileForm(event)">
+          <input type="hidden" id="edit-id"/>
+
+          <div class="form-grid" style="margin-bottom:20px">
+            <!-- Основное -->
+            <div class="form-card form-full">
+              <h3>Основная информация</h3>
+              <div class="form-grid form-grid--3">
+                <div class="form-group">
+                  <label class="form-label">Имя *</label>
+                  <input class="form-input" id="f-name" placeholder="Sophia" required/>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Город *</label>
+                  <select class="form-select" id="f-city" required>
+                    <option value="">— выбери —</option>
+                    <option>Dubai</option>
+                    <option>Abu Dhabi</option>
+                    <option>Sharjah</option>
+                    <option>Ajman</option>
+                    <option>Ras Al Khaimah</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Район</label>
+                  <input class="form-input" id="f-district" placeholder="Dubai Marina"/>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Возраст</label>
+                  <input class="form-input" id="f-age" type="number" min="18" max="60" placeholder="24"/>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Рост (см)</label>
+                  <input class="form-input" id="f-height" type="number" placeholder="168"/>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Вес (кг)</label>
+                  <input class="form-input" id="f-weight" type="number" placeholder="52"/>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Грудь</label>
+                  <select class="form-select" id="f-bust">
+                    <option value="">—</option>
+                    <option>A</option><option>B</option><option>C</option>
+                    <option>D</option><option>DD</option><option>E</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Цена от</label>
+                  <input class="form-input" id="f-price" placeholder="900 AED / hour"/>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Телефон</label>
+                  <input class="form-input" id="f-phone" placeholder="+971 50 000 0000"/>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">О себе</label>
+                <textarea class="form-textarea" id="f-about" rows="3" placeholder="Краткое описание..."></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Доступность</label>
+                <input class="form-input" id="f-availability" placeholder="Daily, 12:00 - 02:00"/>
+              </div>
+            </div>
+
+            <!-- Фото -->
+            <div class="form-card form-full">
+              <h3>Фото</h3>
+              <div class="form-group">
+                <label class="form-label">Главное фото (URL)</label>
+                <input class="form-input" id="f-photo" placeholder="https://..."/>
+                <div class="form-hint">Прямая ссылка на изображение</div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Галерея (URL, по одному)</label>
+                <div class="gallery-list" id="gallery-list"></div>
+                <button type="button" class="btn btn--ghost btn--sm" style="margin-top:8px" onclick="addGalleryRow()">+ Добавить фото</button>
+              </div>
+            </div>
+
+            <!-- Услуги и языки -->
+            <div class="form-card">
+              <h3>Услуги</h3>
+              <div class="form-group">
+                <label class="form-label">Список услуг (через запятую)</label>
+                <textarea class="form-textarea" id="f-services" rows="3" placeholder="Dinner dates, Travel companion, Massage"></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Языки (через запятую)</label>
+                <input class="form-input" id="f-languages" placeholder="English, Russian"/>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Теги (через запятую)</label>
+                <input class="form-input" id="f-tags" placeholder="Blonde, Slim, VIP"/>
+              </div>
+            </div>
+
+            <!-- Тарифы -->
+            <div class="form-card">
+              <h3>Тарифы</h3>
+              <div id="rates-list"></div>
+              <button type="button" class="btn btn--ghost btn--sm" onclick="addRateRow()">+ Добавить тариф</button>
+            </div>
+
+            <!-- Бейджи и статус -->
+            <div class="form-card form-full">
+              <h3>Бейджи и статус</h3>
+              <div class="form-group">
+                <label class="form-label">Бейджи</label>
+                <div class="checkboxes">
+                  <label class="checkbox-label"><input type="checkbox" name="badge" value="vip"/> VIP</label>
+                  <label class="checkbox-label"><input type="checkbox" name="badge" value="new"/> New</label>
+                  <label class="checkbox-label"><input type="checkbox" name="badge" value="verified"/> Verified</label>
+                  <label class="checkbox-label"><input type="checkbox" name="badge" value="online"/> Online</label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Цвет акцента</label>
+                <input type="color" id="f-color" value="#f72585" style="height:36px;cursor:pointer;border-radius:6px;border:1px solid var(--border);background:var(--surface2);padding:2px 4px;"/>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:12px">
+            <button class="btn btn--primary" type="submit" id="submit-btn">Сохранить анкету</button>
+            <button class="btn btn--ghost" type="button" onclick="resetForm()">Отмена</button>
+          </div>
+        </form>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- Confirm modal -->
+<div class="modal-backdrop" id="confirm-modal">
+  <div class="modal">
+    <h3 id="confirm-title">Удалить анкету?</h3>
+    <p id="confirm-text">Это действие нельзя отменить.</p>
+    <div class="modal-actions">
+      <button class="btn btn--ghost" onclick="closeConfirm()">Отмена</button>
+      <button class="btn btn--danger" id="confirm-ok">Удалить</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="config.js"></script>
+<script src="supabase.js"></script>
+<script>
+'use strict';
+
+// ── Auth ──────────────────────────────────────────────────────────────────────
+const ADMIN_PASS_KEY = 'ec_admin_auth';
+const ADMIN_PASS     = 'eliteconnect2025'; // ← смени на свой пароль
+
+function doLogin() {
+  const val = document.getElementById('login-password').value;
+  if (val === ADMIN_PASS) {
+    sessionStorage.setItem(ADMIN_PASS_KEY, '1');
+    showAdmin();
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+  }
+}
+
+function doLogout() {
+  sessionStorage.removeItem(ADMIN_PASS_KEY);
+  location.reload();
+}
+
+function showAdmin() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('admin-screen').style.display = 'block';
+  loadDashboard();
+  addGalleryRow();
+  addRateRow();
+  addRateRow();
+  addRateRow();
+}
+
+document.getElementById('login-password').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+
+// ── Toast ────────────────────────────────────────────────────────────────────
+function toast(msg, isError = false) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = isError ? 'error show' : 'show';
+  setTimeout(() => el.className = '', 3000);
+}
+
+// ── Panel nav ────────────────────────────────────────────────────────────────
+function switchPanel(btn) {
+  document.querySelectorAll('.sidebar__item').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const id = btn.dataset.panel;
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  if (id === 'profiles') loadProfilesTable();
+  if (id === 'dashboard') loadDashboard();
+}
+
+function switchPanelById(id) {
+  const btn = document.querySelector(`[data-panel="${id}"]`);
+  if (btn) switchPanel(btn);
+}
+
+// ── Data ─────────────────────────────────────────────────────────────────────
+let allProfiles = [];
+
+async function fetchAll() {
+  allProfiles = await window.EC_DB.loadAllProfiles();
+  return allProfiles;
+}
+
+// ── Dashboard ────────────────────────────────────────────────────────────────
+async function loadDashboard() {
+  await fetchAll();
+  const active  = allProfiles.filter(p => p.is_active !== false);
+  const hidden  = allProfiles.filter(p => p.is_active === false);
+  const vip     = allProfiles.filter(p => p.badges?.includes('vip'));
+
+  document.getElementById('stat-total').textContent  = allProfiles.length;
+  document.getElementById('stat-active').textContent = active.length;
+  document.getElementById('stat-vip').textContent    = vip.length;
+  document.getElementById('stat-hidden').textContent = hidden.length;
+
+  const recent = [...allProfiles].slice(0, 5);
+  document.getElementById('recent-table-wrap').innerHTML = buildTable(recent, true);
+}
+
+// ── Profiles table ───────────────────────────────────────────────────────────
+async function loadProfilesTable() {
+  document.getElementById('profiles-table-wrap').innerHTML = '<div class="loading"><span class="spinner"></span></div>';
+  await fetchAll();
+  document.getElementById('profiles-table-wrap').innerHTML = buildTable(allProfiles, false);
+}
+
+function buildTable(profiles, compact) {
+  if (!profiles.length) return '<div class="loading">Анкет нет</div>';
+  return `
+    <table>
+      <thead><tr>
+        <th>Фото</th><th>Имя</th><th>Город</th><th>Возраст</th>
+        <th>Бейджи</th><th>Статус</th>${compact ? '' : '<th>Действия</th>'}
+      </tr></thead>
+      <tbody>
+        ${profiles.map(p => `
+          <tr>
+            <td><img class="profile-thumb" src="${p.photo || ''}" onerror="this.style.display='none'" loading="lazy"/></td>
+            <td><strong>${esc(p.name)}</strong></td>
+            <td>${esc(p.city)} ${p.district ? '/ ' + esc(p.district) : ''}</td>
+            <td>${p.age || '—'}</td>
+            <td>${(p.badges || []).map(b => `<span class="badge badge--${b}">${b}</span>`).join(' ')}</td>
+            <td>${p.is_active === false
+              ? '<span class="badge badge--hidden">Скрыта</span>'
+              : '<span class="badge badge--active">Активна</span>'}</td>
+            ${compact ? '' : `
+            <td><div class="actions">
+              <button class="btn btn--ghost btn--sm" onclick="editProfile(${p.id})">&#9998; Ред.</button>
+              <button class="btn btn--sm ${p.is_active === false ? 'btn--success' : 'btn--ghost'}"
+                onclick="toggleProfile(${p.id}, ${!p.is_active})">
+                ${p.is_active === false ? '&#9654; Показать' : '&#9646;&#9646; Скрыть'}
+              </button>
+              <button class="btn btn--danger btn--sm" onclick="confirmDelete(${p.id}, '${esc(p.name)}')">&#128465;</button>
+            </div></td>`}
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>`;
+}
+
+function esc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── Toggle active ────────────────────────────────────────────────────────────
+async function toggleProfile(id, makeActive) {
+  try {
+    await window.EC_DB.toggleActive(id, makeActive);
+    toast(makeActive ? 'Анкета показана' : 'Анкета скрыта');
+    loadProfilesTable();
+  } catch (e) {
+    toast('Ошибка: ' + e.message, true);
+  }
+}
+
+// ── Delete ───────────────────────────────────────────────────────────────────
+let pendingDeleteId = null;
+
+function confirmDelete(id, name) {
+  pendingDeleteId = id;
+  document.getElementById('confirm-title').textContent = `Удалить «${name}»?`;
+  document.getElementById('confirm-modal').classList.add('open');
+}
+
+function closeConfirm() {
+  pendingDeleteId = null;
+  document.getElementById('confirm-modal').classList.remove('open');
+}
+
+document.getElementById('confirm-ok').addEventListener('click', async () => {
+  if (!pendingDeleteId) return;
+  try {
+    await window.EC_DB.deleteProfile(pendingDeleteId);
+    toast('Анкета удалена');
+    closeConfirm();
+    loadProfilesTable();
+    loadDashboard();
+  } catch (e) {
+    toast('Ошибка: ' + e.message, true);
+  }
+});
+
+// ── Form: gallery rows ───────────────────────────────────────────────────────
+function addGalleryRow(val = '') {
+  const list = document.getElementById('gallery-list');
+  const row = document.createElement('div');
+  row.className = 'gallery-item';
+  row.innerHTML = `
+    <input class="form-input gallery-url" placeholder="https://..." value="${esc(val)}"/>
+    <button type="button" class="remove-gallery" onclick="this.parentElement.remove()">&#215;</button>`;
+  list.appendChild(row);
+}
+
+// ── Form: rate rows ───────────────────────────────────────────────────────────
+function addRateRow(label = '', price = '') {
+  const list = document.getElementById('rates-list');
+  const row = document.createElement('div');
+  row.className = 'rates-row';
+  row.innerHTML = `
+    <input class="form-input rate-label" placeholder="1 hour" value="${esc(label)}"/>
+    <input class="form-input rate-price" placeholder="900 AED"  value="${esc(price)}"/>
+    <button type="button" class="remove-rate" onclick="this.parentElement.remove()">&#215;</button>`;
+  list.appendChild(row);
+}
+
+// ── Edit ──────────────────────────────────────────────────────────────────────
+function editProfile(id) {
+  const p = allProfiles.find(x => x.id === id);
+  if (!p) return;
+
+  switchPanelById('add');
+  document.getElementById('form-title').textContent = 'Редактировать анкету';
+  document.getElementById('edit-id').value = id;
+
+  document.getElementById('f-name').value         = p.name || '';
+  document.getElementById('f-city').value         = p.city || '';
+  document.getElementById('f-district').value     = p.district || '';
+  document.getElementById('f-age').value          = p.age || '';
+  document.getElementById('f-height').value       = p.height || '';
+  document.getElementById('f-weight').value       = p.weight || '';
+  document.getElementById('f-bust').value         = p.bust || '';
+  document.getElementById('f-price').value        = p.priceFrom || '';
+  document.getElementById('f-phone').value        = p.phone || '';
+  document.getElementById('f-about').value        = p.aboutMe || '';
+  document.getElementById('f-availability').value = p.availability || '';
+  document.getElementById('f-services').value     = (p.services || []).join(', ');
+  document.getElementById('f-languages').value    = (p.languages || []).join(', ');
+  document.getElementById('f-tags').value         = (p.tags || []).join(', ');
+  document.getElementById('f-photo').value        = p.photo || '';
+  document.getElementById('f-color').value        = p.color || '#f72585';
+
+  // badges
+  document.querySelectorAll('[name="badge"]').forEach(cb => {
+    cb.checked = (p.badges || []).includes(cb.value);
+  });
+
+  // gallery
+  document.getElementById('gallery-list').innerHTML = '';
+  (p.gallery || []).forEach(url => addGalleryRow(url));
+  if (!p.gallery?.length) addGalleryRow();
+
+  // rates
+  document.getElementById('rates-list').innerHTML = '';
+  (p.rates || []).forEach(r => addRateRow(r.label, r.price));
+  if (!p.rates?.length) { addRateRow(); addRateRow(); addRateRow(); }
+}
+
+// ── Reset form ────────────────────────────────────────────────────────────────
+function resetForm() {
+  document.getElementById('profile-form').reset();
+  document.getElementById('edit-id').value = '';
+  document.getElementById('form-title').textContent = 'Новая анкета';
+  document.getElementById('gallery-list').innerHTML = '';
+  document.getElementById('rates-list').innerHTML = '';
+  addGalleryRow();
+  addRateRow(); addRateRow(); addRateRow();
+}
+
+// ── Submit ────────────────────────────────────────────────────────────────────
+async function submitProfileForm(e) {
+  e.preventDefault();
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Сохраняю...';
+
+  const badges = [...document.querySelectorAll('[name="badge"]:checked')].map(cb => cb.value);
+
+  const rates = [...document.querySelectorAll('.rates-row')].map(row => ({
+    label: row.querySelector('.rate-label').value.trim(),
+    price: row.querySelector('.rate-price').value.trim(),
+  })).filter(r => r.label || r.price);
+
+  const gallery = [...document.querySelectorAll('.gallery-url')]
+    .map(i => i.value.trim()).filter(Boolean);
+
+  const profile = {
+    name:         document.getElementById('f-name').value.trim(),
+    city:         document.getElementById('f-city').value,
+    district:     document.getElementById('f-district').value.trim(),
+    age:          document.getElementById('f-age').value,
+    height:       document.getElementById('f-height').value,
+    weight:       document.getElementById('f-weight').value,
+    bust:         document.getElementById('f-bust').value,
+    priceFrom:    document.getElementById('f-price').value.trim(),
+    phone:        document.getElementById('f-phone').value.trim(),
+    aboutMe:      document.getElementById('f-about').value.trim(),
+    availability: document.getElementById('f-availability').value.trim(),
+    services:     document.getElementById('f-services').value.trim(),
+    languages:    document.getElementById('f-languages').value.trim(),
+    tags:         document.getElementById('f-tags').value.trim(),
+    photo:        document.getElementById('f-photo').value.trim(),
+    gallery,
+    rates,
+    badges,
+    color:        document.getElementById('f-color').value,
+  };
+
+  try {
+    const editId = document.getElementById('edit-id').value;
+    if (editId) {
+      await window.EC_DB.updateProfile(Number(editId), profile);
+      toast('Анкета обновлена ✓');
+    } else {
+      await window.EC_DB.saveProfile(profile);
+      toast('Анкета добавлена ✓');
+    }
+    resetForm();
+    switchPanelById('profiles');
+  } catch (err) {
+    toast('Ошибка: ' + err.message, true);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Сохранить анкету';
+  }
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+if (sessionStorage.getItem(ADMIN_PASS_KEY) === '1') {
+  showAdmin();
+}
+</script>
+</body>
+</html>
