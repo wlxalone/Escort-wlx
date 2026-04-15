@@ -1001,7 +1001,7 @@ body[data-page="escort"] .footer {
 }
 
 .escort-layout {
-  max-width: 1020px;
+  max-width: 1140px;
   margin: 0 auto;
 }
 
@@ -1183,20 +1183,20 @@ body[data-page="escort"] .footer {
   min-height: 36px;
 }
 
-.escort-page .profile-card--editorial {
+.profile-card--editorial {
   background: transparent;
   border: none;
   box-shadow: none;
   cursor: default;
 }
 
-.escort-page .profile-card--editorial:hover {
+.profile-card--editorial:hover {
   transform: none;
   box-shadow: none;
   border-color: transparent;
 }
 
-.escort-page .profile-card--editorial .profile-card__img-wrap {
+.profile-card--editorial .profile-card__img-wrap {
   aspect-ratio: 0.67;
   min-height: 410px;
   container-type: inline-size;
@@ -1207,70 +1207,69 @@ body[data-page="escort"] .footer {
     inset 0 1px 0 rgba(255,255,255,.04);
 }
 
-.escort-page .profile-card--editorial .profile-card__img-wrap::before {
+.profile-card--editorial .profile-card__img-wrap::before {
   content: '';
   position: absolute;
   inset: 0;
   z-index: 1;
   background:
-    linear-gradient(180deg, rgba(10,8,14,.06) 0%, rgba(10,8,14,.24) 32%, rgba(10,8,14,.78) 100%),
-    linear-gradient(90deg, rgba(0,0,0,.18) 0%, transparent 30%, transparent 70%, rgba(0,0,0,.12) 100%);
+    linear-gradient(180deg, rgba(10,8,14,.04) 0%, rgba(10,8,14,.18) 30%, rgba(10,8,14,.88) 100%);
   pointer-events: none;
 }
 
-.escort-page .profile-card--editorial .profile-card__img {
+.profile-card--editorial .profile-card__img {
   object-position: center top;
 }
 
-.escort-page .profile-card--editorial .profile-card__badges,
-.escort-page .profile-card--editorial .profile-card__fav,
-.escort-page .profile-card--editorial .profile-card__gallery-stack,
-.escort-page .profile-card--editorial .profile-card__editorial {
+.profile-card--editorial .profile-card__badges,
+.profile-card--editorial .profile-card__fav,
+.profile-card--editorial .profile-card__gallery-stack,
+.profile-card--editorial .profile-card__editorial {
   z-index: 2;
 }
 
-.escort-page .profile-card--editorial .profile-card__badges {
+.profile-card--editorial .profile-card__badges {
   top: 12px;
   left: 12px;
 }
 
-.escort-page .profile-card--editorial .badge {
+.profile-card--editorial .badge {
   font-size: 11px;
   padding: 5px 10px;
 }
 
-.escort-page .profile-card--editorial .profile-card__fav {
+.profile-card--editorial .profile-card__fav {
   top: 12px;
   right: 12px;
-  width: 36px;
-  height: 36px;
-  background: rgba(10,10,14,.42);
-  border: 1px solid rgba(255,255,255,.08);
-  backdrop-filter: blur(10px);
+  width: 38px;
+  height: 38px;
+  background: rgba(10,10,14,.52);
+  border: 1px solid rgba(255,255,255,.1);
+  backdrop-filter: blur(12px);
 }
 
 .profile-card__gallery-stack {
   position: absolute;
-  top: 24px;
-  right: 16px;
-  width: 52px;
+  top: 60px;
+  right: 12px;
+  width: 72px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   pointer-events: none;
 }
 
 .profile-card__gallery-item {
-  width: 48px;
-  height: 48px;
+  width: 68px;
+  height: 68px;
   border-radius: 50%;
   overflow: hidden;
-  border: 2px solid rgba(247,37,133,.72);
+  border: 2.5px solid rgba(247,37,133,.9);
   background: rgba(18,18,24,.85);
   box-shadow:
-    0 10px 18px rgba(0,0,0,.28),
-    0 0 0 3px rgba(255,255,255,.08);
+    0 8px 20px rgba(0,0,0,.42),
+    0 0 0 2px rgba(255,255,255,.08);
 }
 
 .profile-card__gallery-item img {
@@ -1282,9 +1281,9 @@ body[data-page="escort"] .footer {
 .profile-card__editorial {
   position: absolute;
   left: 0;
-  right: 88px;
+  right: 0;
   bottom: 0;
-  padding: 0 14px 16px;
+  padding: 0 90px 16px 16px;
 }
 
 .profile-card__editorial-copy {
@@ -1363,40 +1362,40 @@ body[data-page="escort"] .footer {
   background: linear-gradient(180deg, #ff41b7 0%, #cb2de1 100%);
 }
 
-.escort-page .profile-card--editorial .profile-card__body,
-.escort-page .profile-card--editorial .profile-card__price-tag {
+.profile-card--editorial .profile-card__body,
+.profile-card--editorial .profile-card__price-tag {
   display: none;
 }
 
-.escort-page .profiles-grid.list-mode .profile-card--editorial {
+.profiles-grid.list-mode .profile-card--editorial {
   display: block;
   max-height: none;
 }
 
-.escort-page .profiles-grid.list-mode .profile-card--editorial .profile-card__img-wrap {
+.profiles-grid.list-mode .profile-card--editorial .profile-card__img-wrap {
   width: 100%;
   aspect-ratio: 0.67;
 }
 
 @container (max-width: 300px) {
   .profile-card__gallery-stack {
-    top: 22px;
-    right: 12px;
-    width: 44px;
-    gap: 8px;
+    top: 52px;
+    right: 10px;
+    width: 52px;
+    gap: 7px;
   }
 
   .profile-card__gallery-item {
-    width: 40px;
-    height: 40px;
+    width: 48px;
+    height: 48px;
     box-shadow:
       0 8px 16px rgba(0,0,0,.24),
       0 0 0 2px rgba(255,255,255,.08);
   }
 
   .profile-card__editorial {
-    right: 56px;
-    padding: 0 12px 12px;
+    right: 0;
+    padding: 0 68px 12px 12px;
   }
 
   .profile-card__editorial-copy {
@@ -1468,9 +1467,6 @@ body[data-page="escort"] .footer {
   .footer__top { grid-template-columns: 1fr 1fr 1fr; }
   .footer__brand { grid-column: 1 / -1; }
   .profile-layout { grid-template-columns: 50% 1fr; gap: 32px; }
-  .escort-page .profiles-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
 }
 @media (max-width: 900px) {
   .header__nav, .header__signin { display: none; }
@@ -1543,20 +1539,20 @@ body[data-page="escort"] .footer {
   .escort-filter-actions { grid-column: auto; flex-direction: column; }
   .escort-filter-actions__btn { width: 100%; }
   .escort-page .profiles-grid { grid-template-columns: 1fr; }
-  .escort-page .profile-card--editorial .profile-card__img-wrap { min-height: 420px; }
+  .profile-card--editorial .profile-card__img-wrap { min-height: 420px; }
   .profile-card__gallery-stack {
-    top: 24px;
-    right: 14px;
-    width: 48px;
-    gap: 8px;
+    top: 52px;
+    right: 12px;
+    width: 60px;
+    gap: 7px;
   }
   .profile-card__gallery-item {
-    width: 44px;
-    height: 44px;
+    width: 56px;
+    height: 56px;
   }
   .profile-card__editorial {
-    right: 64px;
-    padding: 0 14px 14px;
+    right: 0;
+    padding: 0 78px 14px 14px;
   }
   .profile-card__editorial-copy {
     max-width: none;

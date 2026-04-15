@@ -707,7 +707,41 @@
   }
 
   function localizePrice(price) {
-    return String(price || '').replace(' / hour', t('dynamic.perHourSuffix'));
+    const lang = getCurrentLanguage();
+    const str = String(price || '');
+
+    // Parse "AMOUNT CURRENCY [/ period]" — e.g. "200 USD / hour", "735 AED"
+    const match = str.match(/^(\d+(?:[.,]\d+)?)\s*(USD|AED|RUB|PLN)(.*)/i);
+    if (!match) {
+      return str.replace(' / hour', t('dynamic.perHourSuffix'));
+    }
+
+    const amount = parseFloat(match[1].replace(',', '.'));
+    const srcCurrency = match[2].toUpperCase();
+    const hasSuffix = match[3].trim() !== '';
+
+    // Convert any source currency → USD first
+    const toUsd = { USD: 1, AED: 1 / 3.67, RUB: 1 / 92, PLN: 1 / 4.05 };
+    const usdAmount = amount * (toUsd[srcCurrency] || 1);
+
+    // Target currency per language
+    const targets = {
+      EN: { rate: 1,    symbol: '$',    before: true  },
+      AR: { rate: 3.67, symbol: 'د.إ', before: false },
+      RU: { rate: 92,   symbol: '₽',   before: false }
+    };
+    const target = targets[lang] || targets.EN;
+    const converted = Math.round(usdAmount * target.rate);
+
+    // Format number with locale-aware thousands separator
+    const locales = { EN: 'en-US', AR: 'ar-SA', RU: 'ru-RU' };
+    const formatted = converted.toLocaleString(locales[lang] || 'en-US');
+
+    const priceStr = target.before
+      ? `${target.symbol}${formatted}`
+      : `${formatted} ${target.symbol}`;
+
+    return hasSuffix ? `${priceStr}${t('dynamic.perHourSuffix')}` : priceStr;
   }
 
   function formatLocation(city, district) {
