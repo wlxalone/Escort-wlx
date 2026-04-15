@@ -146,7 +146,9 @@
     .form-hint { font-size: 11px; color: var(--muted); margin-top: 4px; }
 
     .rates-row { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
-    .rates-row input { flex: 1; }
+    .rates-row .rate-label { flex: 1.4; }
+    .rates-row .rate-price { flex: 1; }
+    .rates-row .rate-currency { width: 90px; flex-shrink: 0; }
     .rates-row .remove-rate { background: none; border: none; color: var(--red); cursor: pointer; font-size: 18px; line-height: 1; padding: 4px; }
 
     .gallery-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
@@ -1068,13 +1070,35 @@ async function handleGalleryFile(input, index) {
 }
 
 // ── Form: rate rows ───────────────────────────────────────────────────────────
+const RATE_PERIODS = ['1 час','2 часа','3 часа','4 часа','5 часов','Ночь','Выезд','Апартаменты'];
+const RATE_CURRENCIES = ['AED','USD','EUR','RUB'];
+
 function addRateRow(label = '', price = '') {
+  // Parse existing price string like "500 AED" → num=500, cur=AED
+  let priceNum = '', priceCur = 'AED';
+  if (price) {
+    const m = String(price).match(/^(\d[\d\s,.]*)?\s*([A-Z]{3})?$/);
+    if (m) { priceNum = (m[1] || '').trim(); priceCur = m[2] || 'AED'; }
+    else { priceNum = price; }
+  }
+
+  const periodOpts = RATE_PERIODS.map(p =>
+    `<option value="${p}" ${p === label ? 'selected' : ''}>${p}</option>`
+  ).join('');
+  const curOpts = RATE_CURRENCIES.map(c =>
+    `<option value="${c}" ${c === priceCur ? 'selected' : ''}>${c}</option>`
+  ).join('');
+
   const list = document.getElementById('rates-list');
   const row = document.createElement('div');
   row.className = 'rates-row';
   row.innerHTML = `
-    <input class="form-input rate-label" placeholder="1 hour" value="${esc(label)}"/>
-    <input class="form-input rate-price" placeholder="900 AED"  value="${esc(price)}"/>
+    <select class="form-select rate-label">
+      <option value="">— период —</option>
+      ${periodOpts}
+    </select>
+    <input class="form-input rate-price" type="number" min="0" placeholder="500" value="${esc(priceNum)}"/>
+    <select class="form-select rate-currency">${curOpts}</select>
     <button type="button" class="remove-rate" onclick="this.parentElement.remove()">&#215;</button>`;
   list.appendChild(row);
 }
@@ -1183,7 +1207,7 @@ async function submitProfileForm(e) {
 
   const rates = [...document.querySelectorAll('.rates-row')].map(row => ({
     label: row.querySelector('.rate-label').value.trim(),
-    price: row.querySelector('.rate-price').value.trim(),
+    price: [row.querySelector('.rate-price').value.trim(), row.querySelector('.rate-currency').value].filter(Boolean).join(' '),
   })).filter(r => r.label || r.price);
 
   const gallery = galleryItems.map(i => i.url).filter(Boolean);
