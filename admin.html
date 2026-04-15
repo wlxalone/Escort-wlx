@@ -909,9 +909,22 @@ const _SURL = 'https://ksnljmqvfopqhfykocof.supabase.co';
 const _SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzbmxqbXF2Zm9wcWhmeWtvY29mIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NjI0Mzc0OSwiZXhwIjoyMDkxODE5NzQ5fQ.CijKkU_DWI10zb3Pj56pIOi_YXsTvvgN6B6W3nOFUQU';
 const storageClient = window.supabase.createClient(_SURL, _SKEY);
 
+function toSafeFolder(str) {
+  const map = {
+    а:'a',б:'b',в:'v',г:'g',д:'d',е:'e',ё:'yo',ж:'zh',з:'z',и:'i',й:'j',
+    к:'k',л:'l',м:'m',н:'n',о:'o',п:'p',р:'r',с:'s',т:'t',у:'u',ф:'f',
+    х:'h',ц:'ts',ч:'ch',ш:'sh',щ:'sch',ъ:'',ы:'y',ь:'',э:'e',ю:'yu',я:'ya',
+  };
+  const result = String(str).toLowerCase()
+    .split('').map(c => map[c] ?? c).join('')
+    .replace(/[^a-z0-9]+/g, '_')
+    .replace(/^_+|_+$/g, '');
+  return result || 'profile';
+}
+
 async function uploadToStorage(file, folder) {
-  const ext  = file.name.split('.').pop();
-  const name = `${folder}/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
+  const ext  = file.name.split('.').pop().toLowerCase().replace(/[^a-z0-9]/g, '');
+  const name = `${toSafeFolder(folder)}/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
   const { data, error } = await storageClient.storage
     .from(BUCKET)
     .upload(name, file, { upsert: true, contentType: file.type });
