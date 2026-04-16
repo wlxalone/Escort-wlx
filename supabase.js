@@ -169,5 +169,24 @@
     if (error) throw error;
   }
 
-  window.EC_DB = { loadProfiles, loadAllProfiles, saveProfile, updateProfile, toggleActive, deleteProfile, saveRequest, loadRequests, updateRequestStatus };
+  async function deleteRequest(id) {
+    const { error } = await client
+      .from('registration_requests')
+      .delete()
+      .eq('id', id);
+    if (error) throw error;
+  }
+
+  async function checkApprovedEmail(email) {
+    const { data, error } = await client
+      .from('registration_requests')
+      .select('id, display_name, status')
+      .eq('email', email)
+      .eq('status', 'approved')
+      .maybeSingle();
+    if (error) throw error;
+    return data; // null if not found
+  }
+
+  window.EC_DB = { loadProfiles, loadAllProfiles, saveProfile, updateProfile, toggleActive, deleteProfile, saveRequest, loadRequests, updateRequestStatus, deleteRequest, checkApprovedEmail };
 })();

@@ -1346,11 +1346,14 @@ function renderRequestsGrid(requests) {
   const cards = filtered.map(r => {
     const statusLabel = { pending: 'Новая', approved: 'Одобрена', rejected: 'Отклонена' }[r.status] || r.status;
     const date = r.created_at ? new Date(r.created_at).toLocaleDateString('ru-RU') : '';
-    const actions = r.status === 'pending' ? `
+    const actions = `
       <div class="request-card__actions">
-        <button class="btn btn--success btn--sm" onclick="approveRequest(${r.id})">Одобрить &#10003;</button>
-        <button class="btn btn--danger btn--sm" onclick="rejectRequest(${r.id})">Отклонить &#10007;</button>
-      </div>` : '';
+        ${r.status === 'pending' ? `
+          <button class="btn btn--success btn--sm" onclick="approveRequest(${r.id})">Одобрить &#10003;</button>
+          <button class="btn btn--ghost btn--sm" onclick="rejectRequest(${r.id})">Отклонить &#10007;</button>
+        ` : ''}
+        <button class="btn btn--danger btn--sm" style="margin-left:auto" onclick="deleteRequestById(${r.id})">&#128465; Удалить</button>
+      </div>`;
 
     return `
       <div class="request-card">
@@ -1397,6 +1400,17 @@ async function rejectRequest(id) {
   try {
     await window.EC_DB.updateRequestStatus(id, 'rejected');
     toast('Заявка отклонена');
+    loadRequestsPanel();
+  } catch (e) {
+    toast('Ошибка: ' + e.message, true);
+  }
+}
+
+async function deleteRequestById(id) {
+  if (!confirm('Удалить заявку? Это действие нельзя отменить.')) return;
+  try {
+    await window.EC_DB.deleteRequest(id);
+    toast('Заявка удалена');
     loadRequestsPanel();
   } catch (e) {
     toast('Ошибка: ' + e.message, true);

@@ -80,18 +80,45 @@
     <section class="content-section">
       <div class="container">
         <form class="contact-form" id="signin-form">
-          <h2 class="contact-form__title">Welcome back</h2>
-          <p class="contact-form__sub">This is a front-end demo flow. Real authentication can be connected later.</p>
+          <h2 class="contact-form__title">Вход</h2>
+          <p class="contact-form__sub">Введи email, который указывал при регистрации.</p>
+          <div id="signin-error" style="display:none;color:#ef4444;font-size:13px;margin-bottom:12px;padding:10px 14px;background:rgba(239,68,68,.1);border-radius:8px;border:1px solid rgba(239,68,68,.3)"></div>
           <div class="form-group">
             <label class="form-label" for="signin-email">Email</label>
             <input class="form-input" id="signin-email" type="email" placeholder="name@example.com" required/>
           </div>
-          <div class="form-group">
-            <label class="form-label" for="signin-password">Password</label>
-            <input class="form-input" id="signin-password" type="password" placeholder="Enter your password" required/>
-          </div>
-          <button class="btn btn--primary btn--lg" type="submit">Sign In</button>
+          <button class="btn btn--primary btn--lg" type="submit" id="signin-btn">Войти</button>
         </form>
+        <script>
+          document.getElementById('signin-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('signin-btn');
+            const errEl = document.getElementById('signin-error');
+            const email = document.getElementById('signin-email').value.trim();
+            btn.disabled = true;
+            btn.textContent = 'Проверяю...';
+            errEl.style.display = 'none';
+            try {
+              // Wait for supabase.js to init
+              if (!window.EC_DB) throw new Error('Сервис недоступен, обновите страницу');
+              const user = await window.EC_DB.checkApprovedEmail(email);
+              if (user) {
+                localStorage.setItem('ec_user', JSON.stringify({ id: user.id, name: user.display_name, email }));
+                window.location.href = 'escort.html';
+              } else {
+                errEl.textContent = 'Аккаунт не найден или не одобрён. Обратитесь к администратору.';
+                errEl.style.display = 'block';
+                btn.disabled = false;
+                btn.textContent = 'Войти';
+              }
+            } catch(err) {
+              errEl.textContent = 'Ошибка: ' + err.message;
+              errEl.style.display = 'block';
+              btn.disabled = false;
+              btn.textContent = 'Войти';
+            }
+          });
+        </script>
       </div>
     </section>
   </main>
