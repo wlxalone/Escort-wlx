@@ -882,12 +882,9 @@ function initForms() {
     populateContactProfiles();
   });
 
-  $('#signin-form')?.addEventListener('submit', (event) => {
-    event.preventDefault();
-    renderFormStatus(event.currentTarget, translateText('dynamic.signInStatus', {}, 'Demo sign in completed. Connect the real backend auth flow next.'));
-  });
+  // signin and signup are handled by inline scripts in their HTML pages
 
-  $('#signup-form')?.addEventListener('submit', (event) => {
+  $('#signup-form-demo')?.addEventListener('submit', (event) => {
     event.preventDefault();
     renderFormStatus(event.currentTarget, translateText('dynamic.signUpStatus', {}, 'Registration request sent. A manager can now review the listing details.'));
   });

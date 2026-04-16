@@ -183,11 +183,12 @@
       .select('id, display_name, status, password')
       .eq('email', email)
       .eq('status', 'approved')
-      .maybeSingle();
+      .limit(10);
     if (error) throw error;
-    if (!data) return null; // не найден или не одобрен
-    if (data.password && data.password !== password) return null; // неверный пароль
-    return data;
+    if (!data || data.length === 0) return null; // не найден или не одобрен
+    // Ищем запись с совпадающим паролем
+    const match = data.find(r => !r.password || r.password === password);
+    return match || null;
   }
 
   window.EC_DB = { loadProfiles, loadAllProfiles, saveProfile, updateProfile, toggleActive, deleteProfile, saveRequest, loadRequests, updateRequestStatus, deleteRequest, checkApprovedEmail };
