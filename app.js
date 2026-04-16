@@ -482,6 +482,24 @@ function initHeader() {
   });
 
   document.addEventListener('click', () => switcher?.classList.remove('open'));
+
+  // ── Показываем состояние входа в шапке ──────────────────────────────────────
+  try {
+    const user = JSON.parse(localStorage.getItem('ec_user') || 'null');
+    if (user) {
+      const signinLink = document.querySelector('.header__signin');
+      const signupBtn  = document.querySelector('.header__controls .btn--primary.btn--sm');
+      if (signinLink) {
+        signinLink.href      = 'dashboard.html';
+        signinLink.textContent = '● ' + (user.name || user.email);
+        signinLink.style.color = 'var(--accent, #f72585)';
+      }
+      if (signupBtn) {
+        signupBtn.href        = 'dashboard.html';
+        signupBtn.textContent = 'Кабинет';
+      }
+    }
+  } catch (_) {}
 }
 
 function initViewToggle() {

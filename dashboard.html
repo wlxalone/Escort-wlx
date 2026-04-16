@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Личный кабинет — EliteConnect</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    .cabinet { max-width: 860px; margin: 48px auto; padding: 0 20px 80px; }
+
+    .cabinet__hero {
+      display: flex; align-items: center; gap: 24px;
+      background: var(--surface, #161616); border: 1px solid var(--border, #2a2a2a);
+      border-radius: 20px; padding: 32px; margin-bottom: 28px;
+    }
+    .cabinet__avatar {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: linear-gradient(135deg, #f72585, #7209b7);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; font-weight: 700; color: #fff; flex-shrink: 0;
+    }
+    .cabinet__hero-info { flex: 1; }
+    .cabinet__name { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+    .cabinet__email { font-size: 13px; color: var(--muted, #888); }
+    .cabinet__logout {
+      padding: 8px 18px; border-radius: 8px; border: 1px solid var(--border, #2a2a2a);
+      background: transparent; color: var(--text, #e8e8e8); font-size: 13px;
+      font-weight: 600; cursor: pointer; transition: all .15s;
+    }
+    .cabinet__logout:hover { border-color: #ef4444; color: #ef4444; }
+
+    .cabinet__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 600px) { .cabinet__grid { grid-template-columns: 1fr; } }
+
+    .cab-card {
+      background: var(--surface, #161616); border: 1px solid var(--border, #2a2a2a);
+      border-radius: 16px; padding: 24px;
+    }
+    .cab-card--full { grid-column: 1 / -1; }
+    .cab-card__title {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .08em; color: var(--muted, #888); margin-bottom: 18px;
+    }
+    .cab-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border, #2a2a2a); }
+    .cab-row:last-child { border-bottom: none; }
+    .cab-row__label { font-size: 13px; color: var(--muted, #888); }
+    .cab-row__value { font-size: 13px; font-weight: 500; color: var(--text, #e8e8e8); text-align: right; max-width: 60%; word-break: break-word; }
+
+    .status-banner {
+      border-radius: 12px; padding: 20px 24px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .status-banner--pending  { background: rgba(245,158,11,.1);  border: 1px solid rgba(245,158,11,.3); }
+    .status-banner--approved { background: rgba(34,197,94,.1);   border: 1px solid rgba(34,197,94,.3); }
+    .status-banner--rejected { background: rgba(239,68,68,.1);   border: 1px solid rgba(239,68,68,.3); }
+    .status-banner__icon { font-size: 32px; line-height: 1; }
+    .status-banner__title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+    .status-banner__text  { font-size: 13px; color: var(--muted, #888); }
+
+    .cab-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+    .btn-cab {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 10px 20px; border-radius: 10px; font-size: 13px;
+      font-weight: 600; cursor: pointer; border: none; transition: opacity .15s; text-decoration: none;
+    }
+    .btn-cab:hover { opacity: .85; }
+    .btn-cab--primary { background: #f72585; color: #fff; }
+    .btn-cab--ghost { background: transparent; border: 1px solid var(--border, #2a2a2a); color: var(--text, #e8e8e8); }
+
+    .no-data { text-align: center; padding: 60px 20px; color: var(--muted, #888); font-size: 15px; }
+    .spinner-wrap { text-align: center; padding: 80px; color: var(--muted, #888); }
+    .spinner { display: inline-block; width: 24px; height: 24px; border: 2px solid var(--border, #2a2a2a); border-top-color: #f72585; border-radius: 50%; animation: spin .7s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body data-page="dashboard">
+
+  <div id="age-gate" class="age-gate">
+    <div class="age-gate__backdrop"></div>
+    <div class="age-gate__box">
+      <div class="age-gate__eyebrow">18+</div>
+      <h2 class="age-gate__title">Age Verification</h2>
+      <p class="age-gate__text">You must be 18 years or older to enter this website.</p>
+      <div class="age-gate__actions">
+        <button id="age-gate-no" class="btn age-gate__btn age-gate__btn--exit" type="button">Exit</button>
+        <button id="age-gate-yes" class="btn age-gate__btn age-gate__btn--enter" type="button">Enter</button>
+      </div>
+    </div>
+  </div>
+
+  <header class="header" id="header">
+    <div class="container header__inner">
+      <a href="index.html" class="header__logo">
+        <span class="header__logo-text"><span class="header__logo-accent">Elite</span>Connect</span>
+      </a>
+      <nav class="header__nav">
+        <a href="index.html" data-nav="home" class="header__nav-link">Home</a>
+        <a href="escort.html" data-nav="escort" class="header__nav-link">Escort</a>
+        <a href="apartments.html" data-nav="apartments" class="header__nav-link">Apartments</a>
+        <a href="contact.html" data-nav="contact" class="header__nav-link">Contact</a>
+      </nav>
+      <div class="header__controls">
+        <div class="lang-switcher" id="lang-switcher">
+          <button class="lang-switcher__btn" type="button">
+            <svg viewBox="0 0 20 20" fill="none" width="16" height="16"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.4"/><path d="M10 2c-2 2.5-3 5-3 8s1 5.5 3 8M10 2c2 2.5 3 5 3 8s-1 5.5-3 8M2 10h16" stroke="currentColor" stroke-width="1.4"/></svg>
+            <span id="current-lang">EN</span>
+            <svg class="lang-switcher__arrow" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </button>
+          <ul class="lang-switcher__dropdown" id="lang-dropdown">
+            <li><button data-lang="EN" type="button">English</button></li>
+            <li><button data-lang="RU" type="button">Russian</button></li>
+          </ul>
+        </div>
+        <a href="dashboard.html" class="header__signin" style="color:#f72585">● Кабинет</a>
+        <button onclick="doLogout()" class="btn btn--primary btn--sm">Выйти</button>
+        <button class="header__burger" id="burger" aria-label="Open menu" type="button">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-drawer" id="mobile-drawer">
+    <nav class="mobile-drawer__nav">
+      <a href="index.html" class="mobile-drawer__link">Home</a>
+      <a href="escort.html" class="mobile-drawer__link">Escort</a>
+      <a href="contact.html" class="mobile-drawer__link">Contact</a>
+      <hr class="mobile-drawer__divider"/>
+      <button onclick="doLogout()" class="btn btn--primary btn--full">Выйти</button>
+    </nav>
+  </div>
+
+  <main>
+    <div class="cabinet" id="cabinet-wrap">
+      <div class="spinner-wrap"><span class="spinner"></span></div>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="config.js"></script>
+  <script src="supabase.js"></script>
+  <script src="i18n.js"></script>
+  <script src="app.js"></script>
+  <script>
+  'use strict';
+
+  function doLogout() {
+    localStorage.removeItem('ec_user');
+    window.location.href = 'signin.html';
+  }
+
+  function statusInfo(status) {
+    const map = {
+      pending:  { icon: '⏳', label: 'На рассмотрении', text: 'Ваша заявка получена и ожидает проверки администратором. Обычно это занимает до 24 часов.', cls: 'pending' },
+      approved: { icon: '✅', label: 'Одобрено',         text: 'Ваш аккаунт активен. Вы можете пользоваться сайтом.',                                      cls: 'approved' },
+      rejected: { icon: '❌', label: 'Отклонено',        text: 'Ваша заявка была отклонена. Свяжитесь с администратором для уточнения причин.',             cls: 'rejected' },
+    };
+    return map[status] || map.pending;
+  }
+
+  function renderCabinet(user, req) {
+    const wrap = document.getElementById('cabinet-wrap');
+    const initial = (user.name || user.email || '?')[0].toUpperCase();
+    const st = statusInfo(req ? req.status : 'pending');
+
+    const tg = req?.telegram ? `<a href="https://t.me/${req.telegram.replace(/^@/,'')}" target="_blank" style="color:#f72585">@${req.telegram.replace(/^@/,'')}</a>` : '—';
+
+    wrap.innerHTML = `
+      <div class="cabinet__hero">
+        <div class="cabinet__avatar">${initial}</div>
+        <div class="cabinet__hero-info">
+          <div class="cabinet__name">${esc(user.name || 'Пользователь')}</div>
+          <div class="cabinet__email">${esc(user.email)}</div>
+        </div>
+        <button class="cabinet__logout" onclick="doLogout()">Выйти</button>
+      </div>
+
+      <div class="cab-card cab-card--full" style="margin-bottom:20px">
+        <div class="status-banner status-banner--${st.cls}">
+          <div class="status-banner__icon">${st.icon}</div>
+          <div>
+            <div class="status-banner__title">${st.label}</div>
+            <div class="status-banner__text">${st.text}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cabinet__grid">
+        <div class="cab-card">
+          <div class="cab-card__title">Информация</div>
+          <div class="cab-row"><span class="cab-row__label">Имя</span><span class="cab-row__value">${esc(req?.display_name || user.name || '—')}</span></div>
+          <div class="cab-row"><span class="cab-row__label">Email</span><span class="cab-row__value">${esc(user.email)}</span></div>
+          <div class="cab-row"><span class="cab-row__label">Telegram</span><span class="cab-row__value">${tg}</span></div>
+          <div class="cab-row"><span class="cab-row__label">Город</span><span class="cab-row__value">${esc(req?.city || '—')}</span></div>
+          <div class="cab-row"><span class="cab-row__label">Тип аккаунта</span><span class="cab-row__value">${esc(req?.account_type || '—')}</span></div>
+        </div>
+
+        <div class="cab-card">
+          <div class="cab-card__title">Описание заявки</div>
+          <p style="font-size:14px;line-height:1.6;color:var(--text,#e8e8e8)">${esc(req?.description || '—')}</p>
+          <div class="cab-actions">
+            <a href="escort.html" class="btn-cab btn-cab--ghost">Смотреть анкеты</a>
+            ${req?.status === 'approved' ? '<a href="signup.html" class="btn-cab btn-cab--ghost">Подать новую заявку</a>' : ''}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function esc(s) {
+    return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  async function initDashboard() {
+    const user = JSON.parse(localStorage.getItem('ec_user') || 'null');
+    if (!user) {
+      window.location.href = 'signin.html';
+      return;
+    }
+
+    const wrap = document.getElementById('cabinet-wrap');
+    try {
+      // Загружаем данные заявки из БД
+      const { data, error } = await window.EC_SUPABASE
+        .from('registration_requests')
+        .select('*')
+        .eq('email', user.email)
+        .order('created_at', { ascending: false })
+        .limit(1);
+
+      const req = (data && data.length > 0) ? data[0] : null;
+      renderCabinet(user, req);
+    } catch (e) {
+      wrap.innerHTML = `<div class="no-data">Ошибка загрузки данных: ${esc(e.message)}</div>`;
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initDashboard();
+  });
+  </script>
+</body>
+</html>

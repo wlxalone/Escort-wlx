@@ -108,7 +108,7 @@
               const user = await window.EC_DB.checkApprovedEmail(email, password);
               if (user) {
                 localStorage.setItem('ec_user', JSON.stringify({ id: user.id, name: user.display_name, email }));
-                window.location.href = 'escort.html';
+                window.location.href = 'dashboard.html';
               } else {
                 errEl.textContent = 'Аккаунт не найден или не одобрён. Обратитесь к администратору.';
                 errEl.style.display = 'block';
