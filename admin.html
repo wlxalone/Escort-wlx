@@ -258,6 +258,22 @@
     .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--pink); border-radius: 50%; animation: spin .7s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    /* ── Requests grid ── */
+    .requests-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+    .request-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+    .request-card__header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+    .request-card__name { font-size: 16px; font-weight: 700; }
+    .request-card__meta { color: var(--muted); font-size: 13px; margin-top: 4px; }
+    .request-card__desc { font-size: 13px; color: var(--text); margin: 12px 0; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .request-card__actions { display: flex; gap: 8px; margin-top: 16px; border-top: 1px solid var(--border); padding-top: 14px; }
+    .badge--pending  { background: rgba(245,158,11,.15); color: var(--yellow); }
+    .badge--approved { background: rgba(34,197,94,.15); color: var(--green); }
+    .badge--rejected { background: rgba(239,68,68,.12); color: var(--red); }
+    .filter-bar { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+    .filter-tab { padding: 7px 16px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; border: 1px solid var(--border); background: transparent; color: var(--muted); transition: all .15s; }
+    .filter-tab.active { background: var(--pink); border-color: var(--pink); color: #fff; }
+    .requests-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; border-radius: 9px; background: var(--pink); color: #fff; font-size: 10px; font-weight: 700; padding: 0 4px; margin-left: 4px; }
+
     /* ── Modal ── */
     .modal-backdrop {
       position: fixed; inset: 0; background: rgba(0,0,0,.75);
@@ -310,6 +326,9 @@
       </button>
       <button class="sidebar__item" data-panel="add" onclick="switchPanel(this)">
         &#43; Добавить анкету
+      </button>
+      <button class="sidebar__item" data-panel="requests" onclick="switchPanel(this)">
+        &#9993; Заявки <span id="requests-badge" class="requests-badge" style="display:none"></span>
       </button>
     </aside>
 
@@ -713,6 +732,23 @@
         </form>
       </div>
 
+      <!-- Registration Requests -->
+      <div class="panel" id="panel-requests">
+        <div class="panel-header">
+          <h2>Заявки на регистрацию</h2>
+          <button class="btn btn--ghost btn--sm" onclick="loadRequestsPanel()">&#8635; Обновить</button>
+        </div>
+        <div class="filter-bar" id="requests-filter-bar">
+          <button class="filter-tab active" data-filter="all" onclick="setRequestFilter(this)">Все</button>
+          <button class="filter-tab" data-filter="pending" onclick="setRequestFilter(this)">Новые</button>
+          <button class="filter-tab" data-filter="approved" onclick="setRequestFilter(this)">Одобренные</button>
+          <button class="filter-tab" data-filter="rejected" onclick="setRequestFilter(this)">Отклонённые</button>
+        </div>
+        <div id="requests-grid-wrap">
+          <div class="loading"><span class="spinner"></span></div>
+        </div>
+      </div>
+
     </main>
   </div>
 </div>
@@ -789,6 +825,7 @@ function switchPanel(btn) {
   document.getElementById('panel-' + id).classList.add('active');
   if (id === 'profiles') loadProfilesTable();
   if (id === 'dashboard') loadDashboard();
+  if (id === 'requests') loadRequestsPanel();
 }
 
 function switchPanelById(id) {
@@ -818,6 +855,12 @@ async function loadDashboard() {
 
   const recent = [...allProfiles].slice(0, 5);
   document.getElementById('recent-table-wrap').innerHTML = buildTable(recent, true);
+
+  // Update requests badge
+  try {
+    const reqs = await window.EC_DB.loadRequests();
+    updateRequestBadge(reqs);
+  } catch (_) {}
 }
 
 // ── Profiles table ───────────────────────────────────────────────────────────
@@ -1265,6 +1308,98 @@ async function submitProfileForm(e) {
   } finally {
     btn.disabled = false;
     btn.textContent = 'Сохранить анкету';
+  }
+}
+
+// ── Registration Requests ─────────────────────────────────────────────────────
+let allRequests = [];
+let currentRequestFilter = 'all';
+
+async function loadRequestsPanel() {
+  document.getElementById('requests-grid-wrap').innerHTML = '<div class="loading"><span class="spinner"></span></div>';
+  try {
+    allRequests = await window.EC_DB.loadRequests();
+    updateRequestBadge(allRequests);
+    renderRequestsGrid(allRequests);
+  } catch (e) {
+    document.getElementById('requests-grid-wrap').innerHTML = '<div class="loading">Ошибка загрузки: ' + esc(e.message) + '</div>';
+  }
+}
+
+function setRequestFilter(btn) {
+  document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentRequestFilter = btn.dataset.filter;
+  renderRequestsGrid(allRequests);
+}
+
+function renderRequestsGrid(requests) {
+  const filtered = currentRequestFilter === 'all'
+    ? requests
+    : requests.filter(r => r.status === currentRequestFilter);
+
+  if (!filtered.length) {
+    document.getElementById('requests-grid-wrap').innerHTML = '<div class="loading">Заявок нет</div>';
+    return;
+  }
+
+  const cards = filtered.map(r => {
+    const statusLabel = { pending: 'Новая', approved: 'Одобрена', rejected: 'Отклонена' }[r.status] || r.status;
+    const date = r.created_at ? new Date(r.created_at).toLocaleDateString('ru-RU') : '';
+    const actions = r.status === 'pending' ? `
+      <div class="request-card__actions">
+        <button class="btn btn--success btn--sm" onclick="approveRequest(${r.id})">Одобрить &#10003;</button>
+        <button class="btn btn--danger btn--sm" onclick="rejectRequest(${r.id})">Отклонить &#10007;</button>
+      </div>` : '';
+
+    return `
+      <div class="request-card">
+        <div class="request-card__header">
+          <span class="badge badge--${esc(r.status)}">${statusLabel}</span>
+          <span style="color:var(--muted);font-size:11px">${date}</span>
+        </div>
+        <div class="request-card__name">${esc(r.display_name || '—')}</div>
+        <div class="request-card__meta">
+          ${r.city ? esc(r.city) + ' &middot; ' : ''}${esc(r.account_type || '')}
+          ${r.telegram ? '<br>@' + esc(r.telegram.replace(/^@/, '')) : ''}
+          ${r.email ? '<br>' + esc(r.email) : ''}
+        </div>
+        ${r.description ? `<div class="request-card__desc">${esc(r.description)}</div>` : ''}
+        ${actions}
+      </div>`;
+  }).join('');
+
+  document.getElementById('requests-grid-wrap').innerHTML = `<div class="requests-grid">${cards}</div>`;
+}
+
+function updateRequestBadge(requests) {
+  const pending = (requests || []).filter(r => r.status === 'pending').length;
+  const badge = document.getElementById('requests-badge');
+  if (pending > 0) {
+    badge.textContent = pending;
+    badge.style.display = 'inline-flex';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+async function approveRequest(id) {
+  try {
+    await window.EC_DB.updateRequestStatus(id, 'approved');
+    toast('Заявка одобрена ✓');
+    loadRequestsPanel();
+  } catch (e) {
+    toast('Ошибка: ' + e.message, true);
+  }
+}
+
+async function rejectRequest(id) {
+  try {
+    await window.EC_DB.updateRequestStatus(id, 'rejected');
+    toast('Заявка отклонена');
+    loadRequestsPanel();
+  } catch (e) {
+    toast('Ошибка: ' + e.message, true);
   }
 }
 

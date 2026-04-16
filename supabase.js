@@ -140,5 +140,34 @@
     if (error) throw error;
   }
 
-  window.EC_DB = { loadProfiles, loadAllProfiles, saveProfile, updateProfile, toggleActive, deleteProfile };
+  // ── Registration Requests ───────────────────────────────────────────────────
+
+  async function saveRequest(data) {
+    const { data: row, error } = await client
+      .from('registration_requests')
+      .insert([data])
+      .select()
+      .single();
+    if (error) throw error;
+    return row;
+  }
+
+  async function loadRequests() {
+    const { data, error } = await client
+      .from('registration_requests')
+      .select('*')
+      .order('created_at', { ascending: false });
+    if (error) throw error;
+    return data || [];
+  }
+
+  async function updateRequestStatus(id, status) {
+    const { error } = await client
+      .from('registration_requests')
+      .update({ status })
+      .eq('id', id);
+    if (error) throw error;
+  }
+
+  window.EC_DB = { loadProfiles, loadAllProfiles, saveProfile, updateProfile, toggleActive, deleteProfile, saveRequest, loadRequests, updateRequestStatus };
 })();
