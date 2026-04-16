@@ -177,15 +177,17 @@
     if (error) throw error;
   }
 
-  async function checkApprovedEmail(email) {
+  async function checkApprovedEmail(email, password) {
     const { data, error } = await client
       .from('registration_requests')
-      .select('id, display_name, status')
+      .select('id, display_name, status, password')
       .eq('email', email)
       .eq('status', 'approved')
       .maybeSingle();
     if (error) throw error;
-    return data; // null if not found
+    if (!data) return null; // не найден или не одобрен
+    if (data.password && data.password !== password) return null; // неверный пароль
+    return data;
   }
 
   window.EC_DB = { loadProfiles, loadAllProfiles, saveProfile, updateProfile, toggleActive, deleteProfile, saveRequest, loadRequests, updateRequestStatus, deleteRequest, checkApprovedEmail };
